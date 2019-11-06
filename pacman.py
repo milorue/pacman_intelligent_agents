@@ -17,19 +17,22 @@ from freegames import floor, vector
 state = {'score': 0}
 path = Turtle(visible=False)
 writer = Turtle(visible=False)
-aim = vector(5, 0)
+aim = vector(0, -5)
 pacman = vector(-40, -80)
-# first vector is the location
+# first vector is the location and 2nd is the direction in which they travel
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 160), vector(10, 0)],
+    # [vector(-180, -160), vector(0, 5)],
+    # [vector(100, 160), vector(0, -5)],
+    # [vector(100, -160), vector(-5, 0)],
+    # [vector(100, -140), vector(-5, 0)],
 ]
+backtrack = []
+# map and 1 is an open tile, 0 is a closed tile
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
-    0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
+    0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0,
     0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -108,11 +111,33 @@ def move():
 
     clear()
 
-# if valid move in the directiont then move
-    if valid(pacman + aim):
-        pacman.move(aim)
+# if valid move in the direction then move
 
-    index = offset(pacman)
+    opt = [
+        vector(10, 0),
+        vector(-10, 0),
+        vector(0, 10),
+        vector(0, -10),
+    ]
+
+    movement = choice(opt)
+
+
+    # movement block for pacman need to make into an interface for valid
+    if valid(pacman + aim):
+        pacman.move(aim)  # straight line till hits an invalid move which would be a wall, a move is a position and a
+        # movement direction vector
+        space = pacman + aim  # where we are going
+    else:
+        if movement != aim:
+            change(movement.x,movement.y)
+            if valid(pacman + aim):
+                pacman.move(aim)
+        if valid(pacman + aim):
+            pacman.move(aim)
+
+    index = offset(pacman) # pacman's position
+    print(pacman)
 
 # gets pellets
     if tiles[index] == 1:
@@ -126,15 +151,16 @@ def move():
     goto(pacman.x + 10, pacman.y + 10)
     dot(20, 'yellow')
 
-    for point, course in ghosts:
+    for point, course in ghosts: # point in the current location of ghost
         if valid(point + course):
             point.move(course)
         else:
+            # left | right | up | down
             options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
+                vector(10, 0),
+                vector(-10, 0),
+                vector(0, 10),
+                vector(0, -10),
             ]
             plan = choice(options)
             course.x = plan.x
@@ -144,12 +170,13 @@ def move():
         goto(point.x + 10, point.y + 10)
         dot(20, 'red')
 
-    update()
+    update() # updates the board
 
-    for point, course in ghosts:
+    for point, course in ghosts: # kill pacman function
         if abs(pacman - point) < 20:
             return
 
+    # speed
     ontimer(move, 80)
 
 def change(x, y):
