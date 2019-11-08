@@ -18,7 +18,9 @@ Sensors (Ghost): distance from Pacman, distance from (or location of) other Ghos
 
 ## External Agent Definition
 
-## Work Distribution (ending 11/12/19)
+## Work Distribution
+
+### (ending 11/12/19)
 Milo (Interface and environment cleaning)
 
 Justin (Random behavior and improvements)
