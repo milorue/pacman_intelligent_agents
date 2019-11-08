@@ -2,6 +2,10 @@
 Intelligent Agents that play Pacman
 
 ## PEAS
+Performance Measures:
+Environment:
+Actuators:
+Sensors:
 
 ## External Agent Definition
 
