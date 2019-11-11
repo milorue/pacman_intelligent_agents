@@ -128,12 +128,6 @@ class PacmanBoard:
         for point, course in self.ghosts:  # pacman kill loop
             self.kill_pacman(self.pacman, point)
 
-        data_string = str(self.pacman)
-        for point in self.ghosts:
-            data_string = data_string + "\t" + str(point[0])
-        data_string = data_string + "\t" + str(self.state.get("score"))
-        # print(data_string)
-
     def game_setup(self):
         setup(420, 420, 370, 0)
         hideturtle()
