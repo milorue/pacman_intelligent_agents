@@ -5,7 +5,7 @@ from turtle import *
 from freegames import floor, vector
 
 
-class pacman_board:
+class PacmanBoard:
     def __init__(self, board, pacman, ghosts):
         self.state = {'score': 0}
         self.board = board  # defines the board takes a array
