@@ -1,7 +1,7 @@
 from random import choice
 from turtle import *
 from freegames import floor, vector
-from pacman_board import pacman_board
+from pacman_board import PacmanBoard
 pacman = vector(-40, -80)
 # first vector is the location and 2nd is the direction in which they travel
 ghosts = [
@@ -34,6 +34,6 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
-game = pacman_board(tiles, pacman, ghosts)
+game = PacmanBoard(tiles, pacman, ghosts)
 game.game_setup()
 
