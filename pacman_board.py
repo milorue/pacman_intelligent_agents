@@ -14,8 +14,9 @@ class pacman_board:
 
         self.path = Turtle(visible=False)
         self.writer = Turtle(visible=False)
-        self.aim = vector(0, -5)
+        self.aim = vector(1, 1)
         self.going = self.pacman + self.aim
+        self.is_finished = False
 
     def build_board(self, x, y):
         self.path.up()
@@ -69,6 +70,7 @@ class pacman_board:
         if self.valid_move(self.pacman + vector(x, y)):
             self.aim.x = x
             self.aim.y = y
+
     def scoring(self, position):
         if self.board[position] == 1:
             self.board[position] = 2
@@ -82,6 +84,7 @@ class pacman_board:
 
     def kill_pacman(self, pacman, point):
         if abs(pacman - point) < 20:
+            self.is_finished = True
             return  # exit case
 
     def make_moves(self):
@@ -90,27 +93,28 @@ class pacman_board:
 
         clear()
 
-        # valid moves in a direction then move
+        # left | right | up | down
+        options = [
+            vector(5, 0),
+            vector(-5, 0),
+            vector(0, 5),
+            vector(0, -5),
+        ]
 
-        if self.valid_move(self.pacman + self.aim):
-            self.pacman.move(self.aim) # executes the move defined by aim on pacman
-            self.going = self.pacman + self.aim  # space we are going to
+        # valid moves in a direction then move
+        while(not self.valid_move(self.pacman + self.aim)):
+            self.aim = choice(options)
+        self.pacman.move(self.aim)
 
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
+
 
         '''this is default ghost AI will interface later focusing on pacman right now '''
         for point, course in self.ghosts:
             if self.valid_move(point + course):
                 point.move(course)
             else:
-                # left | right | up | down
-                options = [
-                    vector(10, 0),
-                    vector(-10, 0),
-                    vector(0, 10),
-                    vector(0, -10),
-                ]
                 plan = choice(options)
                 course.x = plan.x
                 course.y = plan.y
@@ -124,6 +128,12 @@ class pacman_board:
         for point, course in self.ghosts:  # pacman kill loop
             self.kill_pacman(self.pacman, point)
 
+        data_string = str(self.pacman)
+        for point in self.ghosts:
+            data_string = data_string + "\t" + str(point[0])
+        data_string = data_string + "\t" + str(self.state.get("score"))
+        # print(data_string)
+
     def game_setup(self):
         setup(420, 420, 370, 0)
         hideturtle()
@@ -133,12 +143,14 @@ class pacman_board:
         self.writer.write(self.state['score'])
         listen()
         # input setup (remove when AI)
-        onkey(lambda: self.move(5, 0), 'Right')
-        onkey(lambda: self.move(-5, 0), 'Left')
-        onkey(lambda: self.move(0, 5), 'Up')
-        onkey(lambda: self.move(0, -5), 'Down')
+        # onkey(lambda: self.move(5, 0), 'Right')
+        # onkey(lambda: self.move(-5, 0), 'Left')
+        # onkey(lambda: self.move(0, 5), 'Up')
+        # onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
-        self.make_moves()
-        done()
-
+        while not self.is_finished:
+            self.make_moves()
+        clearscreen()
+        resetscreen()
+        # done()
 
