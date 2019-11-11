@@ -2,6 +2,9 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 from pacman_board import PacmanBoard
+from copy import deepcopy
+from datetime import *
+
 pacman = vector(-40, -80)
 # first vector is the location and 2nd is the direction in which they travel
 ghosts = [
@@ -34,6 +37,11 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
-game = PacmanBoard(tiles, pacman, ghosts)
-game.game_setup()
+num_games = 100
+for n in range(num_games):
+    game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
+    start = datetime.now()
+    game.game_setup()
+    total_time = datetime.now() - start
+    print(n + 1, ":", total_time.total_seconds(), game.state.get('score'))
 
