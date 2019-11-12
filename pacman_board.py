@@ -103,11 +103,17 @@ class PacmanBoard:
         clear()
 
         # valid moves in a direction then move
-        self.aim = choice(options)
-        while(not self.valid_move(self.pacman + self.aim)):
-            self.aim = choice(options)
-        self.pacman.move(self.aim)
-        self.pacman_tragectories[options.index(self.aim)] += 1
+        # self.aim = choice(options)
+        # while(not self.valid_move(self.pacman + self.aim)):
+        #     self.aim = choice(options)
+        
+        if self.valid_move(self.pacman + self.aim):
+            self.pacman.move(self.aim)
+        else:
+            while not self.valid_move(self.pacman + self.aim):
+                self.aim = choice(options)
+            self.pacman.move(self.aim)
+        # self.pacman_tragectories[options.index(self.aim)] += 1
 
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
@@ -140,10 +146,10 @@ class PacmanBoard:
         self.writer.write(self.state['score'])
         listen()
         # input setup (remove when AI)
-        # onkey(lambda: self.move(5, 0), 'Right')
-        # onkey(lambda: self.move(-5, 0), 'Left')
-        # onkey(lambda: self.move(0, 5), 'Up')
-        # onkey(lambda: self.move(0, -5), 'Down')
+        onkey(lambda: self.move(5, 0), 'Right')
+        onkey(lambda: self.move(-5, 0), 'Left')
+        onkey(lambda: self.move(0, 5), 'Up')
+        onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
         while not self.is_finished:
             self.make_moves()
