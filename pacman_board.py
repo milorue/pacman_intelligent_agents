@@ -21,13 +21,13 @@ class PacmanBoard:
 
         self.path = Turtle(visible=False)
         self.writer = Turtle(visible=False)
-        self.aim = vector(1, 1)
-        self.going = self.pacman + self.aim
-        self.is_finished = False
+        self.aim = vector(0, -5)
+        # self.going = self.pacman + self.aim
 
         self.pacman_tragectories = [0, 0, 0, 0]
 
     def build_board(self, x, y):
+      
         self.path.up()
         self.path.goto(x,y)
         self.path.down()
@@ -39,7 +39,7 @@ class PacmanBoard:
 
         self.path.end_fill()
 
-    def draw_world(self):
+    def draw_world(self):  # replaces world function
         bgcolor('black')  # background color
         self.path.color('blue')  # path color
 
@@ -56,13 +56,13 @@ class PacmanBoard:
                     self.path.goto(x + 10, y + 10)
                     self.path.dot(2, 'white')  # creates pellets
 
-    def get_offset(self, point):
+    def get_offset(self, point):  # replaces offset function
         x = (floor(point.x, 20) + 200) / 20
         y = (180 - floor(point.y, 20)) / 20
         index = int(x + y * 20)
         return index  # returns the offset within the board (for UI purposes)
 
-    def valid_move(self, point):
+    def valid_move(self, point):  # replaces valid function
         index = self.get_offset(point)
 
         if self.board[index] == 0:
@@ -79,22 +79,22 @@ class PacmanBoard:
         if self.valid_move(self.pacman + vector(x, y)):
             self.aim.x = x
             self.aim.y = y
+            print("hit change move function")
+            print(self.aim)
 
-    def scoring(self, position):
+    def scoring(self, position):  # pellet collection function
         if self.board[position] == 1:
             self.board[position] = 2
             self.state['score'] += 1
             x = (position % 20) * 20 - 200
             y = 180 - (position // 20) * 20
             self.build_board(x, y)
-        up()
-        goto(self.pacman.x + 10, self.pacman.y + 10)
-        dot(20, 'yellow')
 
     def kill_pacman(self, pacman, point):
         if abs(pacman - point) < 20:
-            self.is_finished = True
             return  # exit case
+        else:
+            pass
 
     def make_moves(self):
         self.writer.undo()
@@ -102,12 +102,24 @@ class PacmanBoard:
 
         clear()
 
-        '''in this code, the pacman chooses a random aim for every move, not just after hitting a "dead end" in the environmnent'''
+        # valid moves array
+
+        options = [
+            vector(10, 0),
+            vector(-10, 0),
+            vector(0, 10),
+            vector(0, -10),
+        ]
+
+        movement = choice(options)
+
         # valid moves in a direction then move
-        ## self.aim = choice(options)
-        ## while(not self.valid_move(self.pacman + self.aim)):
-        ##     self.aim = choice(options)
-        ## self.pacman_tragectories[options.index(self.aim)] += 1
+
+        if self.valid_move(self.pacman + self.aim):
+            self.pacman.move(self.aim)  # executes the move defined by aim on pacman
+            self.going = self.pacman + self.aim  # space we are going to
+
+        print(self.pacman)
 
         '''this is a similar mechanism to the default ghost AI'''
         # valid moves in a direction then move
@@ -122,12 +134,27 @@ class PacmanBoard:
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
 
+        up()
+        goto(self.pacman.x + 10, self.pacman.y + 10)
+        dot(20, 'yellow')
+
+        # if self.valid_move(self.pacman + self.aim):  # moves pacman
+        #     self.pacman.move(self.aim)
+
         '''this is default ghost AI will interface later focusing on pacman right now '''
         for point, course in self.ghosts:
             if self.valid_move(point + course):
                 point.move(course)
+                print(course)
             else:
-                plan = choice(options)
+                # left | right | up | down
+                options = [
+                    vector(10, 0),
+                    vector(-10, 0),
+                    vector(0, 10),
+                    vector(0, -10),
+                ]
+                plan = choice(options)  # random choice
                 course.x = plan.x
                 course.y = plan.y
 
@@ -135,10 +162,15 @@ class PacmanBoard:
             goto(point.x + 10, point.y + 10)
             dot(20, 'red')
 
+        print("did we get here?")
+
         update()  # updates the board
 
-        for point, course in self.ghosts:  # pacman kill loop
-            self.kill_pacman(self.pacman, point)
+        for point, course in self.ghosts:  # kill pacman function
+            if abs(self.pacman - point) < 20:
+                return
+
+        ontimer(self.make_moves, 10)  # loops make_moves at 80fps
 
     def game_setup(self):
         setup(420, 420, 370, 0)
