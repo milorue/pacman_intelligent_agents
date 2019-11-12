@@ -38,11 +38,15 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
+game = PacmanBoard(tiles, pacman, ghosts)
+game.game_setup()
+
+# data collection
+'''
 num_games = 200
 data = []
 
 data.append("score,total_seconds,num_ghosts,option1,option2,option3,option4\n")
-
 for n in range(num_games):
     game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
     start = datetime.now()
@@ -66,3 +70,4 @@ file = open(file_name, 'w+')
 for d in data:
     file.write(d)
 file.close()
+'''

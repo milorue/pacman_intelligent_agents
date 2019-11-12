@@ -25,7 +25,7 @@ class PacmanBoard:
         self.going = self.pacman + self.aim
         self.is_finished = False
 
-        self.pacman_tragectories = [0, 0, 0, 0]
+        # self.pacman_tragectories = [0, 0, 0, 0]
 
     def build_board(self, x, y):
         self.path.up()
@@ -102,18 +102,22 @@ class PacmanBoard:
 
         clear()
 
+        '''in this code, the pacman chooses a random aim for every move, not just after hitting a "dead end" in the environmnent'''
         # valid moves in a direction then move
-        # self.aim = choice(options)
-        # while(not self.valid_move(self.pacman + self.aim)):
-        #     self.aim = choice(options)
-        
+        ## self.aim = choice(options)
+        ## while(not self.valid_move(self.pacman + self.aim)):
+        ##     self.aim = choice(options)
+        ## self.pacman_tragectories[options.index(self.aim)] += 1
+
+        '''this is a similar mechanism to the default ghost AI'''
+        # valid moves in a direction then move
         if self.valid_move(self.pacman + self.aim):
             self.pacman.move(self.aim)
         else:
-            while not self.valid_move(self.pacman + self.aim):
+            while not self.valid_move(self.pacman + self.aim): # continues to choose a random direction to move in until the selected aim results in a valid move
                 self.aim = choice(options)
             self.pacman.move(self.aim)
-        # self.pacman_tragectories[options.index(self.aim)] += 1
+
 
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
@@ -146,14 +150,17 @@ class PacmanBoard:
         self.writer.write(self.state['score'])
         listen()
         # input setup (remove when AI)
+        '''these are used for the user to make moves instead of the AI'''
         onkey(lambda: self.move(5, 0), 'Right')
         onkey(lambda: self.move(-5, 0), 'Left')
         onkey(lambda: self.move(0, 5), 'Up')
         onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
+        '''while loop to continue moving while pacman has not been killed'''
         while not self.is_finished:
             self.make_moves()
-        clearscreen()
-        resetscreen()
+        '''this is used to reset the simulation for multiple uses instead of "done" call'''
+        # clearscreen()
+        # resetscreen()
         # done()
 
