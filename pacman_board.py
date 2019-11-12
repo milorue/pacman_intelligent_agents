@@ -4,6 +4,13 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 
+# left | right | up | down
+options = [
+    vector(5, 0),
+    vector(-5, 0),
+    vector(0, 5),
+    vector(0, -5),
+]
 
 class PacmanBoard:
     def __init__(self, board, pacman, ghosts):
@@ -17,6 +24,8 @@ class PacmanBoard:
         self.aim = vector(1, 1)
         self.going = self.pacman + self.aim
         self.is_finished = False
+
+        self.pacman_tragectories = [0, 0, 0, 0]
 
     def build_board(self, x, y):
         self.path.up()
@@ -93,18 +102,12 @@ class PacmanBoard:
 
         clear()
 
-        # left | right | up | down
-        options = [
-            vector(5, 0),
-            vector(-5, 0),
-            vector(0, 5),
-            vector(0, -5),
-        ]
-
         # valid moves in a direction then move
+        self.aim = choice(options)
         while(not self.valid_move(self.pacman + self.aim)):
             self.aim = choice(options)
         self.pacman.move(self.aim)
+        self.pacman_tragectories[options.index(self.aim)] += 1
 
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
