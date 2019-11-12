@@ -37,11 +37,6 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
-num_games = 100
-for n in range(num_games):
-    game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
-    start = datetime.now()
-    game.game_setup()
-    total_time = datetime.now() - start
-    print(n + 1, ":", total_time.total_seconds(), game.state.get('score'))
+game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
+game.game_setup()
 

@@ -172,5 +172,3 @@ class PacmanBoard:
         print("Got past draw world")
         self.make_moves()
         done()
-
-
