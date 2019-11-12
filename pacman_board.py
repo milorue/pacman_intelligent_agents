@@ -25,7 +25,7 @@ class PacmanBoard:
         self.going = self.pacman + self.aim
         self.is_finished = False
 
-        # self.pacman_tragectories = [0, 0, 0, 0]
+        self.pacman_tragectories = [0, 0, 0, 0]
 
     def build_board(self, x, y):
         self.path.up()
@@ -118,10 +118,9 @@ class PacmanBoard:
                 self.aim = choice(options)
             self.pacman.move(self.aim)
 
-
+        self.pacman_tragectories[options.index(self.aim)] += 1
         position = self.get_offset(self.pacman)  # pacman's current position
         self.scoring(position)
-
 
         '''this is default ghost AI will interface later focusing on pacman right now '''
         for point, course in self.ghosts:
@@ -151,16 +150,16 @@ class PacmanBoard:
         listen()
         # input setup (remove when AI)
         '''these are used for the user to make moves instead of the AI'''
-        onkey(lambda: self.move(5, 0), 'Right')
-        onkey(lambda: self.move(-5, 0), 'Left')
-        onkey(lambda: self.move(0, 5), 'Up')
-        onkey(lambda: self.move(0, -5), 'Down')
+        # onkey(lambda: self.move(5, 0), 'Right')
+        # onkey(lambda: self.move(-5, 0), 'Left')
+        # onkey(lambda: self.move(0, 5), 'Up')
+        # onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
         '''while loop to continue moving while pacman has not been killed'''
         while not self.is_finished:
             self.make_moves()
         '''this is used to reset the simulation for multiple uses instead of "done" call'''
-        # clearscreen()
-        # resetscreen()
+        clearscreen()
+        resetscreen()
         # done()
 

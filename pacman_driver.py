@@ -38,36 +38,45 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
-game = PacmanBoard(tiles, pacman, ghosts)
-game.game_setup()
-
-# data collection
-'''
-num_games = 200
-data = []
-
-data.append("score,total_seconds,num_ghosts,option1,option2,option3,option4\n")
-for n in range(num_games):
-    game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
-    start = datetime.now()
+def run_single_simulation():
+    # single simulation
+    # '''
+    game = PacmanBoard(tiles, pacman, ghosts)
     game.game_setup()
-    total_time = datetime.now() - start
-    result = {'score': game.state.get('score'), 'total_seconds': total_time.total_seconds(), 'num_ghosts': len(ghosts), 'trajectory_distribution': game.pacman_tragectories}
-    distribution = ""
-    for t in game.pacman_tragectories:
-        distribution = distribution + str(t)
-        if game.pacman_tragectories.index(t) < len(game.pacman_tragectories) - 1:
-            distribution = distribution + ","
-    record = str(result.get('score')) + "," + str(result.get('total_seconds')) + "," + str(result.get('num_ghosts')) + "," + distribution
-    data.append(record + "\n")
-    print(n + 1, ":", result)
+    # '''
 
+def collect_data():
+    # data collection
+    # '''
+    num_games = 200
+    data = []
 
-today = datetime.now()
-file_name = "data-" + today.strftime("%Y%m%d") + ".csv"
-file = open(file_name, 'w+')
+    data.append("score,total_seconds,num_ghosts,option1,option2,option3,option4\n")
+    for n in range(num_games):
+        game = PacmanBoard(deepcopy(tiles), deepcopy(pacman), deepcopy(ghosts))
+        start = datetime.now()
+        game.game_setup()
+        total_time = datetime.now() - start
+        result = {'score': game.state.get('score'), 'total_seconds': total_time.total_seconds(),
+                  'num_ghosts': len(ghosts), 'trajectory_distribution': game.pacman_tragectories}
+        distribution = ""
+        for t in game.pacman_tragectories:
+            distribution = distribution + str(t)
+            if game.pacman_tragectories.index(t) < len(game.pacman_tragectories) - 1:
+                distribution = distribution + ","
+        record = str(result.get('score')) + "," + str(result.get('total_seconds')) + "," + str(
+            result.get('num_ghosts')) + "," + distribution
+        data.append(record + "\n")
+        print(n + 1, ":", result)
 
-for d in data:
-    file.write(d)
-file.close()
-'''
+    today = datetime.now()
+    file_name = "data-" + today.strftime("%Y%m%d") + ".csv"
+    file = open(file_name, 'w+')
+
+    for d in data:
+        file.write(d)
+    file.close()
+    # '''
+
+# run_single_simulation()
+collect_data()
