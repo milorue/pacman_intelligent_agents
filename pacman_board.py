@@ -54,7 +54,7 @@ class PacmanBoard:
         return index  # returns the offset within the board (for UI purposes)
 
     def get_pacman(self):
-        return self.agent
+        return self.agent.agent
 
     def get_ghost(self, ghost_num):
         return self.ghosts[ghost_num]
@@ -91,6 +91,18 @@ class PacmanBoard:
         else:
             pass
 
+    def move_pacman(self):
+        self.agent.choose_direction()
+        move = self.agent.move()
+        if self.valid_move(self.agent.agent + move):
+            self.agent.agent.move(move)
+        position = self.get_offset(self.agent.agent)  # pacman's current position
+        self.scoring(position)
+
+        up()
+        goto(self.agent.agent.x + 10, self.agent.agent.y + 10)
+        dot(20, 'yellow')
+
     def run_game(self):
         self.writer.undo()
         self.writer.write(self.state['score'])
@@ -108,23 +120,14 @@ class PacmanBoard:
 
         movement = choice(options)
 
+        self.move_pacman()
+        print(self.get_pacman())
+
         # valid moves in a direction then move
 
         # if self.valid_move(self.pacman + self.aim):
         #     self.pacman.move(self.aim)  # executes the move defined by aim on pacman
         #     self.going = self.pacman + self.aim  # space we are going to
-
-        self.agent.choose_direction()
-        move = self.agent.move()
-        if self.valid_move(self.agent.agent + move):
-            self.agent.agent.move(move)
-
-        position = self.get_offset(self.agent.agent)  # pacman's current position
-        self.scoring(position)
-
-        up()
-        goto(self.agent.agent.x + 10, self.agent.agent.y + 10)
-        dot(20, 'yellow')
 
         # if self.valid_move(self.pacman + self.aim):  # moves pacman
         #     self.pacman.move(self.aim)
@@ -133,7 +136,6 @@ class PacmanBoard:
         for point, course in self.ghosts:
             if self.valid_move(point + course):
                 point.move(course)
-                print(course)
             else:
                 # left | right | up | down
                 options = [
