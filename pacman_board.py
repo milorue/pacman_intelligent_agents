@@ -3,13 +3,14 @@
 from random import choice
 from turtle import *
 from freegames import floor, vector
+from pacman_agents import PacmanRandom
 
 
 class PacmanBoard:
     def __init__(self, board, pacman, ghosts):
         self.state = {'score': 0}
         self.board = board  # defines the board takes a array
-        self.pacman = pacman  # defines location of pacman and initializes him
+        self.agent = pacman  # defines location of pacman and initializes him
         self.ghosts = ghosts  # defines the locations and faces of ghosts
 
         self.path = Turtle(visible=False)
@@ -52,6 +53,12 @@ class PacmanBoard:
         index = int(x + y * 20)
         return index  # returns the offset within the board (for UI purposes)
 
+    def get_pacman(self):
+        return self.agent
+
+    def get_ghost(self, ghost_num):
+        return self.ghosts[ghost_num]
+
     def valid_move(self, point):  # replaces valid function
         index = self.get_offset(point)
 
@@ -69,8 +76,6 @@ class PacmanBoard:
         if self.valid_move(self.pacman + vector(x, y)):
             self.aim.x = x
             self.aim.y = y
-            print("hit change move function")
-            print(self.aim)
 
     def scoring(self, position):  # pellet collection function
         if self.board[position] == 1:
@@ -86,13 +91,11 @@ class PacmanBoard:
         else:
             pass
 
-    def make_moves(self):
+    def run_game(self):
         self.writer.undo()
         self.writer.write(self.state['score'])
 
         clear()
-
-        print("Got past writers")  # temporary
 
         # valid moves array
 
@@ -107,18 +110,20 @@ class PacmanBoard:
 
         # valid moves in a direction then move
 
-        if self.valid_move(self.pacman + self.aim):
-            self.pacman.move(self.aim)  # executes the move defined by aim on pacman
-            self.going = self.pacman + self.aim  # space we are going to
+        # if self.valid_move(self.pacman + self.aim):
+        #     self.pacman.move(self.aim)  # executes the move defined by aim on pacman
+        #     self.going = self.pacman + self.aim  # space we are going to
 
-        print(self.pacman)
+        self.agent.choose_direction()
+        move = self.agent.move()
+        if self.valid_move(self.agent.agent + move):
+            self.agent.agent.move(move)
 
-
-        position = self.get_offset(self.pacman)  # pacman's current position
+        position = self.get_offset(self.agent.agent)  # pacman's current position
         self.scoring(position)
 
         up()
-        goto(self.pacman.x + 10, self.pacman.y + 10)
+        goto(self.agent.agent.x + 10, self.agent.agent.y + 10)
         dot(20, 'yellow')
 
         # if self.valid_move(self.pacman + self.aim):  # moves pacman
@@ -145,15 +150,13 @@ class PacmanBoard:
             goto(point.x + 10, point.y + 10)
             dot(20, 'red')
 
-        print("did we get here?")
-
         update()  # updates the board
 
         for point, course in self.ghosts:  # kill pacman function
-            if abs(self.pacman - point) < 20:
+            if abs(self.agent.agent - point) < 20:
                 return
 
-        ontimer(self.make_moves, 10)  # loops make_moves at 80fps
+        ontimer(self.run_game, 10)  # loops make_moves at 80fps
 
     def game_setup(self):
         setup(420, 420, 370, 0)
@@ -169,6 +172,5 @@ class PacmanBoard:
         onkey(lambda: self.move(0, 5), 'Up')
         onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
-        print("Got past draw world")
-        self.make_moves()
+        self.run_game()
         done()
