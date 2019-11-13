@@ -103,6 +103,14 @@ class PacmanBoard:
         goto(self.agent.agent.x + 10, self.agent.agent.y + 10)
         dot(20, 'yellow')
 
+    def move_ghosts(self):
+        for ghost in self.ghosts:
+            direction = ghost.move()
+
+            up()
+            goto(ghost.agent.x + 10, ghost.agent.y + 10)
+            dot(20, 'red')
+
     def run_game(self):
         self.writer.undo()
         self.writer.write(self.state['score'])
@@ -121,6 +129,7 @@ class PacmanBoard:
         movement = choice(options)
 
         self.move_pacman()
+        self.move_ghosts()
         print(self.get_pacman())
 
         # valid moves in a direction then move
@@ -133,32 +142,30 @@ class PacmanBoard:
         #     self.pacman.move(self.aim)
 
         '''this is default ghost AI will interface later focusing on pacman right now '''
-        for point, course in self.ghosts:
-            if self.valid_move(point + course):
-                point.move(course)
-            else:
-                # left | right | up | down
-                options = [
-                    vector(10, 0),
-                    vector(-10, 0),
-                    vector(0, 10),
-                    vector(0, -10),
-                ]
-                plan = choice(options)  # random choice
-                course.x = plan.x
-                course.y = plan.y
+        # for point, course in self.ghosts:
+        #     if self.valid_move(point + course):
+        #         point.move(course)
+        #     else:
+        #         # left | right | up | down
+        #         options = [
+        #             vector(10, 0),
+        #             vector(-10, 0),
+        #             vector(0, 10),
+        #             vector(0, -10),
+        #         ]
+        #         plan = choice(options)  # random choice
+        #         course.x = plan.x
+        #         course.y = plan.y
 
-            up()
-            goto(point.x + 10, point.y + 10)
-            dot(20, 'red')
+
 
         update()  # updates the board
 
-        for point, course in self.ghosts:  # kill pacman function
-            if abs(self.agent.agent - point) < 20:
+        for ghost in self.ghosts:  # kill pacman function
+            if abs(self.agent.agent - ghost.agent) < 20:
                 return
 
-        ontimer(self.run_game, 10)  # loops make_moves at 80fps
+        ontimer(self.run_game, 80)  # loops make_moves at 80fps
 
     def game_setup(self):
         setup(420, 420, 370, 0)

@@ -33,5 +33,3 @@ ghosts = [
     [vector(100, 160), vector(0, -5)],
     [vector(100, -160), vector(-5, 0)]
 ]
-
-pacman = vector(-40, -80)
