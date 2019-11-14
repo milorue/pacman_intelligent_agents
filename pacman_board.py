@@ -73,7 +73,7 @@ class PacmanBoard:
         return point.x % 20 == 0 or point.y % 20 == 0
 
     def move(self, x, y):  # any change in movement direction is handled here
-        if self.valid_move(self.pacman + vector(x, y)):
+        if self.valid_move(self.agent.agent + vector(x, y)):
             self.aim.x = x
             self.aim.y = y
 
@@ -165,7 +165,7 @@ class PacmanBoard:
             if abs(self.agent.agent - ghost.agent) < 20:
                 return
 
-        ontimer(self.run_game, 80)  # loops make_moves at 80fps
+        ontimer(self.run_game, 100)  # loops make_moves at 80fps
 
     def game_setup(self):
         setup(420, 420, 370, 0)
