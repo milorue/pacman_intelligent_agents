@@ -6,7 +6,7 @@ from pacman.board_raw import *
 
 position = vector(-40, -80)
 direction = vector(0, -5)
-pacman = PacmanRandom(position, direction)
+pacman = PacmanRandom(position, direction, deepcopy(tiles))
 
 ghost = vector(-180,160)
 ghostDir = vector(10, 0)

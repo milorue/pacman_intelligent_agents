@@ -3,7 +3,7 @@
 from random import choice
 from turtle import *
 from freegames import floor, vector
-from pacman_agents import PacmanRandom
+from pacman.pacman_agents import PacmanRandom
 
 
 class PacmanBoard:
@@ -92,10 +92,9 @@ class PacmanBoard:
             pass
 
     def move_pacman(self):
-        self.agent.choose_direction()
-        move = self.agent.move()
-        if self.valid_move(self.agent.agent + move):
-            self.agent.agent.move(move)
+        direction = self.agent.send_move_to_board()  # get agents direction it intends to go
+        self.agent.move(self.valid_move(self.agent.agent + direction))  # validates our move
+
         position = self.get_offset(self.agent.agent)  # pacman's current position
         self.scoring(position)
 
@@ -105,7 +104,8 @@ class PacmanBoard:
 
     def move_ghosts(self):
         for ghost in self.ghosts:
-            direction = ghost.move()
+            direction = ghost.send_move_to_board()
+            ghost.move(self.valid_move(ghost.agent + direction))  # validates the move
 
             up()
             goto(ghost.agent.x + 10, ghost.agent.y + 10)
@@ -130,33 +130,6 @@ class PacmanBoard:
 
         self.move_pacman()
         self.move_ghosts()
-
-        # valid moves in a direction then move
-
-        # if self.valid_move(self.pacman + self.aim):
-        #     self.pacman.move(self.aim)  # executes the move defined by aim on pacman
-        #     self.going = self.pacman + self.aim  # space we are going to
-
-        # if self.valid_move(self.pacman + self.aim):  # moves pacman
-        #     self.pacman.move(self.aim)
-
-        '''this is default ghost AI will interface later focusing on pacman right now '''
-        # for point, course in self.ghosts:
-        #     if self.valid_move(point + course):
-        #         point.move(course)
-        #     else:
-        #         # left | right | up | down
-        #         options = [
-        #             vector(10, 0),
-        #             vector(-10, 0),
-        #             vector(0, 10),
-        #             vector(0, -10),
-        #         ]
-        #         plan = choice(options)  # random choice
-        #         course.x = plan.x
-        #         course.y = plan.y
-
-
 
         update()  # updates the board
 

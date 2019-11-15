@@ -5,7 +5,6 @@ from random import choice
 class GhostRandom:
     def __init__(self, agent, direction, board):
         self.board = board
-        print(board)
         self.direction = direction
         self.agent = agent
         self.moves = [
@@ -15,7 +14,7 @@ class GhostRandom:
             vector(0, -10)  # down
         ]
 
-    def choose_move(self):
+    def send_move_to_board(self):
         return self.direction
 
     def move(self, valid):
@@ -32,16 +31,3 @@ class GhostRandom:
         y = (180 - floor(point.y, 20)) / 20
         board_pos = int(x + y * 20)
         return board_pos
-
-    def check_move_on_board(self, move):
-        move_located = self.determine_board_pos(move)
-
-        if self.board[move_located] == 0:
-            return False
-
-        move_located = self.determine_board_pos(move + 19)
-
-        if self.board[move_located] == 0:
-            return False
-
-        return move.x % 20 == 0 or move.y % 20 == 0

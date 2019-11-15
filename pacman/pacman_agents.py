@@ -1,8 +1,10 @@
 from freegames import floor, vector
 from random import choice, randint
 
+
 class PacmanRandom:
-    def __init__(self, vec, direction):
+    def __init__(self, vec, direction, board):
+        self.board = board
         self.direction = direction
         self.agent = vec
         self.moves = [
@@ -12,13 +14,14 @@ class PacmanRandom:
             vector(0, -10)
         ]
 
-    def move(self):
-        randomNum = randint(1,10)
-        if randomNum >= 5:
-            return self.direction
+    def send_move_to_board(self):
+        return self.direction
+
+    def move(self, valid):
+        if valid:
+            self.agent.move(self.direction)
         else:
             self.choose_direction()
-            return self.direction
 
     def choose_direction(self):
         self.direction = choice(self.moves)
