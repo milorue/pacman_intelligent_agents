@@ -1,20 +1,25 @@
 from freegames import floor, vector
 from random import choice
 
+
 class GhostRandom:
-    def __init__(self, vec, direction, board):
+    def __init__(self, agent, direction, board):
         self.board = board
         print(board)
         self.direction = direction
-        self.agent = vec
+        self.agent = agent
         self.moves = [
             vector(10, 0),  # right
             vector(-10, 0),  # left
             vector(0, 10),  # up
             vector(0, -10)  # down
         ]
-    def move(self):
-        if self.check_move_on_board(self.agent + self.direction):
+
+    def choose_move(self):
+        return self.direction
+
+    def move(self, valid):
+        if valid:
             self.agent.move(self.direction)
         else:
             self.choose_direction()
