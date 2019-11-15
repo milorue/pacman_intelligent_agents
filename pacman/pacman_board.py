@@ -130,7 +130,6 @@ class PacmanBoard:
 
         self.move_pacman()
         self.move_ghosts()
-        print(self.get_pacman())
 
         # valid moves in a direction then move
 
