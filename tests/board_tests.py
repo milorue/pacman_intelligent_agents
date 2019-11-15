@@ -1,7 +1,6 @@
 import unittest
-from turtle import *
-from freegames import floor, vector
-from pacman_board import PacmanBoard
+from freegames import vector
+from pacman.pacman_board import PacmanBoard
 
 '''This currently is empty lets fill it and be good programmers'''
 

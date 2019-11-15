@@ -1,12 +1,8 @@
-from random import choice
-from turtle import *
-from freegames import floor, vector
-from pacman_board import PacmanBoard
-from pacman_agents import PacmanRandom
-from ghost_agents import GhostRandom
+from pacman.pacman_board import PacmanBoard
+from pacman.pacman_agents import PacmanRandom
+from pacman.ghost_agents import GhostRandom
 from copy import deepcopy
-from board_raw import *
-from datetime import *
+from pacman.board_raw import *
 
 position = vector(-40, -80)
 direction = vector(0, -5)
