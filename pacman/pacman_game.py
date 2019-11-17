@@ -37,8 +37,8 @@ class PacmanGame:
         bgcolor('black')  # background color
         self.path.color('blue')  # path color
 
-        for index in range(len(self.board)):  # loops through board array to draw
-            tile = self.board[index]
+        for index in range(len(self.board.tiles)):  # loops through board array to draw
+            tile = self.board.tiles[index]
 
             if tile > 0:  # builds walls
                 x = (index % 20) * 20 - 200
@@ -50,39 +50,20 @@ class PacmanGame:
                     self.path.goto(x + 10, y + 10)
                     self.path.dot(2, 'white')  # creates pellets
 
-    def get_offset(self, point):  # replaces offset function
-        x = (floor(point.x, 20) + 200) / 20
-        y = (180 - floor(point.y, 20)) / 20
-        index = int(x + y * 20)
-        return index  # returns the offset within the board (for UI purposes)
-
     def get_pacman(self):
         return self.pacman.agent
 
     def get_ghost(self, ghost_num):
         return self.ghosts[ghost_num]
 
-    def valid_move(self, point):  # replaces valid function
-        index = self.get_offset(point)
-
-        if self.board[index] == 0:
-            return False
-
-        index = self.get_offset(point + 19)
-
-        if self.board[index] == 0:
-            return False
-
-        return point.x % 20 == 0 or point.y % 20 == 0
-
     def move(self, x, y):  # any change in movement direction is handled here
-        if self.valid_move(self.pacman.agent + vector(x, y)):
+        if self.board.valid_move(self.pacman.agent + vector(x, y)):
             self.aim.x = x
             self.aim.y = y
 
     def scoring(self, position):  # pellet collection function
-        if self.board[position] == 1:
-            self.board[position] = 2
+        if self.board.tiles[position] == 1:
+            self.board.tiles[position] = 2
             self.state['score'] += 1
             x = (position % 20) * 20 - 200
             y = 180 - (position // 20) * 20
@@ -97,11 +78,11 @@ class PacmanGame:
     def move_pacman(self):
 
         direction = self.pacman.direction  # get agents direction it intends to go
-        if self.pacman.move(self.valid_move(self.pacman_object + direction)):  # validates our move
+        if self.pacman.move(self.board.valid_move(self.pacman_object + direction)):  # validates our move
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
 
-        position = self.get_offset(self.pacman_object)  # pacman's current position
+        position = self.board.get_offset(self.pacman_object)  # pacman's current position
         self.scoring(position)
 
         up()
@@ -111,7 +92,7 @@ class PacmanGame:
     def move_ghosts(self):
         for ghost in self.ghosts:
             direction = ghost.send_move_to_board()
-            ghost.move(self.valid_move(ghost.agent + direction))  # validates the move
+            ghost.move(self.board.valid_move(ghost.agent + direction))  # validates the move
 
             up()
             goto(ghost.agent.x + 10, ghost.agent.y + 10)
