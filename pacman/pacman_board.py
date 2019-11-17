@@ -24,3 +24,6 @@ class PacmanBoard:
             return False
 
         return position.x % 20 == 0 or position.y % 20 == 0
+
+    def make_vec(self, x ,y):
+        return vector(x, y)

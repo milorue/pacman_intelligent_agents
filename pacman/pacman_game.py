@@ -77,8 +77,8 @@ class PacmanGame:
 
     def move_pacman(self):
 
-        direction = self.pacman.direction  # get agents direction it intends to go
-        if self.pacman.move(self.board.valid_move(self.pacman_object + direction)):  # validates our move
+        direction = self.pacman.move() # get agents direction it intends to go
+        if self.board.valid_move(self.pacman_object + direction):
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
 
