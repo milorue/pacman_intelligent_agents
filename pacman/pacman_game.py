@@ -14,7 +14,10 @@ class PacmanGame:
         self.ghosts = ghosts  # defines the locations and faces of ghosts
 
         self.pacman_object = vector(self.pacman.x, self.pacman.y)
-        self.ghosts_objecst = []
+        self.ghosts_objects = []
+
+        for ghost in self.ghosts:
+            self.ghosts_objects.append(vector(ghost.x, ghost.y))
 
         self.path = Turtle(visible=False)
         self.writer = Turtle(visible=False)
@@ -91,11 +94,14 @@ class PacmanGame:
 
     def move_ghosts(self):
         for ghost in self.ghosts:
-            direction = ghost.send_move_to_board()
-            ghost.move(self.board.valid_move(ghost.agent + direction))  # validates the move
+            direction = ghost.move()
+            object = vector(ghost.x, ghost.y)
+            if self.board.valid_move(object + direction):
+                object.move(direction)
+                ghost.update(object)
 
             up()
-            goto(ghost.agent.x + 10, ghost.agent.y + 10)
+            goto(object.x + 10, object.y + 10)
             dot(20, 'red')
 
     def run_game(self):
@@ -114,14 +120,13 @@ class PacmanGame:
         ]
 
         movement = choice(options)
-
         self.move_pacman()
         self.move_ghosts()
 
         update()  # updates the board
 
         for ghost in self.ghosts:  # kill pacman function
-            if abs(self.pacman_object - ghost.agent) < 20:
+            if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20:
                 return
 
         ontimer(self.run_game, 100)  # loops make_moves at 80fps
