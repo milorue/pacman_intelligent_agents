@@ -1,6 +1,6 @@
 import unittest
 from freegames import vector
-from pacman.pacman_board import PacmanBoard
+from pacman.pacman_game import PacmanGame
 
 '''This currently is empty lets fill it and be good programmers'''
 
@@ -36,20 +36,20 @@ tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ]
 
-game = PacmanBoard(tiles, pacman, ghosts)
+game = PacmanGame(tiles, pacman, ghosts)
 game.game_setup()
 
 class TestBoardBuild(unittest.TestCase):
 
     def test_initialize_board_score(self):
-        environment = PacmanBoard(tiles, pacman, ghosts)
+        environment = PacmanGame(tiles, pacman, ghosts)
         self.assertEqual(environment.state['score'], 0)
 
     def test_intialize_agents(self, environment):
-        environment = PacmanBoard(tiles, pacman, ghosts)
+        environment = PacmanGame(tiles, pacman, ghosts)
         self.assertIsNotNone(environment.pacman)
         self.assertIsNotNone(environment.ghosts)
 
     def test_build_board(self):
-        environment = PacmanBoard(tiles, pacman, ghosts)
+        environment = PacmanGame(tiles, pacman, ghosts)
         environment.game_setup()
