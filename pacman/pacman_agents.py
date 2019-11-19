@@ -76,6 +76,9 @@ class PacmanBetterRandom:
         self.x = new_location.x
         self.y = new_location.y
 
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
 
 class HumanPacman:
     def __init__(self, vec, direction, board):
@@ -121,3 +124,6 @@ class HumanPacman:
     def update(self, new_location):
         self.x = new_location.x
         self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
