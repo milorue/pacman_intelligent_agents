@@ -10,10 +10,10 @@ class GhostRandom:
         self.x = vec.x
         self.y = vec.y
         self.moves = [  # speed
-            vector(7.5, 0),  # right
-            vector(-7.5, 0),  # left
-            vector(0, 7.5),  # up
-            vector(0, -7.5)  # down
+            vector(10, 0),  # right
+            vector(-10, 0),  # left
+            vector(0, 10),  # up
+            vector(0, -10)  # down
         ]
 
         self.valid_moves_count = 0
@@ -54,10 +54,10 @@ class GhostBlinky:  # unfinished dev
         self.x = vec.x
         self.y = vec.y
         self.moves = [  # speed
-            vector(7.5, 0),  # right
-            vector(-7.5, 0),  # left
-            vector(0, 7.5),  # up
-            vector(0, -7.5)  # down
+            vector(10, 0),  # right
+            vector(-10, 0),  # left
+            vector(0, 10),  # up
+            vector(0, -10)  # down
         ]
 
         self.valid_moves_count = 0
@@ -107,10 +107,10 @@ class GhostBetter:
         self.x = vec.x
         self.y = vec.y
         self.moves = [  # speed
-            vector(7.5, 0),  # right
-            vector(-7.5, 0),  # left
-            vector(0, 7.5),  # up
-            vector(0, -7.5)  # down
+            vector(5, 0),  # right
+            vector(-5, 0),  # left
+            vector(0, 5),  # up
+            vector(0, -5)  # down
         ]
 
         self.valid_moves_count = 0

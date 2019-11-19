@@ -23,6 +23,7 @@ class PacmanGame:
         self.writer = Turtle(visible=False)
         self.aim = vector(0, -5)
         # self.going = self.pacman + self.aim
+        self.is_finish = False
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()
@@ -37,8 +38,8 @@ class PacmanGame:
         self.path.end_fill()
 
     def draw_world(self):  # replaces world function
-        bgcolor('black')  # background color
-        self.path.color('blue')  # path color
+        bgcolor('blue')  # background color
+        self.path.color('black')  # path color
 
         for index in range(len(self.board.tiles)):  # loops through board array to draw
             tile = self.board.tiles[index]
@@ -126,10 +127,13 @@ class PacmanGame:
         update()  # updates the board
 
         for ghost in self.ghosts:  # kill pacman function
-            if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20:
+            if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20 or self.state.get('score') == 160:
+                self.is_finish = True
                 return
 
         ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        # while not self.is_finish:
+        #     self.run_game()
 
     def game_setup(self):
         setup(420, 420, 370, 0)
@@ -140,10 +144,10 @@ class PacmanGame:
         self.writer.write(self.state['score'])
         listen()
         # input setup (remove when AI)
-        onkey(lambda: self.move(5, 0), 'Right')
-        onkey(lambda: self.move(-5, 0), 'Left')
-        onkey(lambda: self.move(0, 5), 'Up')
-        onkey(lambda: self.move(0, -5), 'Down')
+        # onkey(lambda: self.move(5, 0), 'Right')
+        # onkey(lambda: self.move(-5, 0), 'Left')
+        # onkey(lambda: self.move(0, 5), 'Up')
+        # onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
         self.run_game()
         done()

@@ -29,8 +29,14 @@ pinky = GhostBetter(ghost2, ghostDir1, board, pacman)
 inky = GhostBetter(ghost3, ghostDir2, board, pacman)
 clide = GhostBetter(ghost4, ghostDir3, board, pacman)
 
+bae = GhostRandom(ghost, ghostDir, board)
+bae1 = GhostRandom(ghost2, ghostDir1, board)
+bae2 = GhostRandom(ghost3, ghostDir2, board)
+bae3 = GhostRandom(ghost4, ghostDir3, board)
+
 
 ghostz = [blinky, pinky, inky, clide]
+badGhosts = [bae, bae1, bae2, bae3]
 
 game = PacmanGame(board, deepcopy(human), deepcopy(ghostz))
 game.game_setup()
