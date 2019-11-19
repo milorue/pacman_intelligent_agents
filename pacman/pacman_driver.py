@@ -14,7 +14,7 @@ pacman = PacmanRandom(position, direction, board)
 pacmanBetter = PacmanBetterRandom(position, direction, board)
 
 
-ghost = vector(-180,160)
+ghost = vector(-180, 160)
 ghostDir = vector(10, 0)
 
 ghosty = GhostRandom(ghost, ghostDir, deepcopy(tiles))

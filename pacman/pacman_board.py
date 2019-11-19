@@ -1,6 +1,6 @@
 from freegames import floor, vector
 
-
+#directions = {[]}
 
 class PacmanBoard:
     def __init__(self, tiles):
@@ -14,7 +14,7 @@ class PacmanBoard:
 
     def valid_move(self, position):
         offset = self.get_offset(position)
-
+        print("offset:", offset)
         if self.tiles[offset] == 0:
             return False
 
@@ -25,5 +25,5 @@ class PacmanBoard:
 
         return position.x % 20 == 0 or position.y % 20 == 0
 
-    def make_vec(self, x ,y):
+    def make_vec(self, x, y):
         return vector(x, y)

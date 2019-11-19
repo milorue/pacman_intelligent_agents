@@ -31,3 +31,4 @@ class GhostRandom:
         y = (180 - floor(point.y, 20)) / 20
         board_pos = int(x + y * 20)
         return board_pos
+
