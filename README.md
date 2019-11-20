@@ -12,6 +12,19 @@ Intelligent Agents that play Pacman
 
 - **Sensors:** Board, location of pellets, location of all agents
 
+## Agent Definition
+- **PacmanHuman:** Human controlled agent for validation Ghost agent validation.
+
+- **PacmanRandom:** Random agent, used for bulk data collection.
+
+- **GhostRandom:** Random simple reflex agent.
+
+- **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location.
+
+- **GhostMCTS:** Uses Monte Carlo tree search to choose a move when at a junction.
+
+- **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman.
+
 ## Work Distribution
 
 ### (ending 11/12/19)
@@ -37,18 +50,6 @@ Intelligent Agents that play Pacman
 
 ## Agent Interface
 
-## Simulation Interface
-
-## Unit Testing Framework
-# Project: Pacman Agents
-Intelligent Agents that play Pacman
-
-## PEAS
-
-## External Agent Definition
-
-## Agent Interface
- 
 ## Simulation Interface
 
 ## Unit Testing Framework
