@@ -2,19 +2,19 @@
 Intelligent Agents that play Pacman
 
 ## PEAS
-Performance Measures (Pacman): game score
+- **Performance Measures (Pacman):** game score
 
-Performance Measures (Ghost): number of moves to defeat Pacman, cooperation metric with other ghosts
+- **Performance Measures (Ghost):** number of moves to defeat Pacman, cooperation metric with other ghosts
 
-Environment (Pacman, Ghost): Pacman default board (may experiment with randomly generated boards or dynamic boards)
+- **Environment (Pacman, Ghost):** Pacman default board (may experiment with randomly generated boards or dynamic boards)
 
-Actuators (Pacman): move right, move left, move up, move down, eat pellet
+- **Actuators (Pacman):** move right, move left, move up, move down, eat pellet
 
-Actuators (Ghost): move right, move left, move up, move down, eat Pacman
+- **Actuators (Ghost):** move right, move left, move up, move down, eat Pacman
 
-Sensors (Pacman): number of pellets remaining, location on board
+- **Sensors (Pacman):** number of pellets remaining, location on board
 
-Sensors (Ghost): distance from Pacman, distance from (or location of) other Ghost(s), location on board
+- **Sensors (Ghost):** distance from Pacman, distance from (or location of) other Ghost(s), location on board
 
 ## External Agent Definition
 
