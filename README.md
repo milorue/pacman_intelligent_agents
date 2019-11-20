@@ -2,19 +2,15 @@
 Intelligent Agents that play Pacman
 
 ## PEAS
-- **Performance Measures (Pacman):** game score
+- **Performance Measures:** Final game score, total survival time
 
-- **Performance Measures (Ghost):** number of moves to defeat Pacman, cooperation metric with other ghosts
+- **Environment:** Board, pellets, power pellets
 
-- **Environment (Pacman, Ghost):** Pacman default board (may experiment with randomly generated boards or dynamic boards)
+- **Actuators (Pacman):** At any time: Legal move (Up, Down, Left, Right)
 
-- **Actuators (Pacman):** move right, move left, move up, move down, eat pellet
+- **Actuators (Ghost):** At junction: Legal move (Up, Down, Left, Right)
 
-- **Actuators (Ghost):** move right, move left, move up, move down, eat Pacman
-
-- **Sensors (Pacman):** number of pellets remaining, location on board
-
-- **Sensors (Ghost):** distance from Pacman, distance from (or location of) other Ghost(s), location on board
+- **Sensors:** Board, location of pellets, location of all agents
 
 ## External Agent Definition
 
@@ -29,6 +25,27 @@ Gabe (Ghost AI)
 
 ## Agent Interface
 
+## Simulation Interface
+
+## Unit Testing Framework
+# Project: Pacman Agents
+Intelligent Agents that play Pacman
+
+## PEAS
+
+## External Agent Definition
+
+## Work Distribution
+
+### (ending 11/12/19)
+Milo (Interface and environment cleaning)
+
+Justin (Random behavior and improvements)
+
+Gabe (Ghost AI)
+
+## Agent Interface
+ 
 ## Simulation Interface
 
 ## Unit Testing Framework
