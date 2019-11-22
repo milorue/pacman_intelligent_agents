@@ -52,4 +52,8 @@ Intelligent Agents that play Pacman
 
 ## Simulation Interface
 
+## Advanced AI
+- **Multi-Agent Cooperative**
+- **MonteC Carlo Search**
+
 ## Unit Testing Framework
