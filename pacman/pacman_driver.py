@@ -4,6 +4,8 @@ from pacman.ghost_agents import GhostRandom, GhostBetter
 from copy import deepcopy
 from pacman.board_raw import *
 from pacman.pacman_board import PacmanBoard
+from datetime import *
+from turtle import Terminator
 
 position = vector(-40, -80)
 direction = vector(0, -5)
@@ -38,6 +40,22 @@ bae3 = GhostRandom(ghost4, ghostDir3, board)
 ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
 
-game = PacmanGame(board, deepcopy(human), deepcopy(ghostz))
-game.game_setup()
+def collect_data(num_simulations):
+    data_all = []
+    for i in range(num_simulations):
+        data_round = {}
+        start = datetime.now()
+        game = PacmanGame(deepcopy(board), deepcopy(pacmanBetter), deepcopy(ghostz))
+        try:
+            game.game_setup()
+        except SystemExit:
+            data_round['score'] = game.state['score']
+            data_round['length'] = str(datetime.now() - start)
+            data_all.append(data_round)
+        print(data_round)
+    print("Simulations:",len(data_all))
 
+def main():
+    collect_data(100)
+
+main()

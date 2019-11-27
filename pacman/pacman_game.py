@@ -4,7 +4,7 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 from pacman.pacman_agents import PacmanRandom
-
+from datetime import *
 
 class PacmanGame:
     def __init__(self, board, pacman, ghosts):
@@ -23,7 +23,6 @@ class PacmanGame:
         self.writer = Turtle(visible=False)
         self.aim = vector(0, -5)
         # self.going = self.pacman + self.aim
-        self.is_finish = False
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()
@@ -106,6 +105,7 @@ class PacmanGame:
             dot(20, 'red')
 
     def run_game(self):
+        self.end = datetime.now()
         self.writer.undo()
         self.writer.write(self.state['score'])
 
@@ -128,10 +128,13 @@ class PacmanGame:
 
         for ghost in self.ghosts:  # kill pacman function
             if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20 or self.state.get('score') == 160:
-                self.is_finish = True
+                self.kill_pacman(self.pacman_object, vector(ghost.x, ghost.y))
+                self.path.clear() # clears the path maker
+                self.writer.clear() # clears the score from the window
+                raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
