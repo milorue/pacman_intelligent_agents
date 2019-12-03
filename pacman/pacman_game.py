@@ -4,7 +4,7 @@ from random import choice
 from turtle import *
 from freegames import floor, vector
 from pacman.pacman_agents import PacmanRandom
-
+from datetime import *
 
 class PacmanGame:
     def __init__(self, board, pacman, ghosts):
@@ -14,7 +14,10 @@ class PacmanGame:
         self.ghosts = ghosts  # defines the locations and faces of ghosts
 
         self.pacman_object = vector(self.pacman.x, self.pacman.y)
-        self.ghosts_objecst = []
+        self.ghosts_objects = []
+
+        for ghost in self.ghosts:
+            self.ghosts_objects.append(vector(ghost.x, ghost.y))
 
         self.path = Turtle(visible=False)
         self.writer = Turtle(visible=False)
@@ -34,8 +37,8 @@ class PacmanGame:
         self.path.end_fill()
 
     def draw_world(self):  # replaces world function
-        bgcolor('black')  # background color
-        self.path.color('blue')  # path color
+        bgcolor('blue')  # background color
+        self.path.color('black')  # path color
 
         for index in range(len(self.board.tiles)):  # loops through board array to draw
             tile = self.board.tiles[index]
@@ -91,14 +94,18 @@ class PacmanGame:
 
     def move_ghosts(self):
         for ghost in self.ghosts:
-            direction = ghost.send_move_to_board()
-            ghost.move(self.board.valid_move(ghost.agent + direction))  # validates the move
+            direction = ghost.move()
+            object = vector(ghost.x, ghost.y)
+            if self.board.valid_move(object + direction):
+                object.move(direction)
+                ghost.update(object)
 
             up()
-            goto(ghost.agent.x + 10, ghost.agent.y + 10)
+            goto(object.x + 10, object.y + 10)
             dot(20, 'red')
 
     def run_game(self):
+        self.end = datetime.now()
         self.writer.undo()
         self.writer.write(self.state['score'])
 
@@ -114,17 +121,22 @@ class PacmanGame:
         ]
 
         movement = choice(options)
-
         self.move_pacman()
         self.move_ghosts()
 
         update()  # updates the board
 
         for ghost in self.ghosts:  # kill pacman function
-            if abs(self.pacman_object - ghost.agent) < 20:
+            if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20 or self.state.get('score') == 160:
+                self.kill_pacman(self.pacman_object, vector(ghost.x, ghost.y))
+                self.path.clear() # clears the path maker
+                self.writer.clear() # clears the score from the window
+                raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
+        # while not self.is_finish:
+        #     self.run_game()
 
     def game_setup(self):
         setup(420, 420, 370, 0)
@@ -135,10 +147,10 @@ class PacmanGame:
         self.writer.write(self.state['score'])
         listen()
         # input setup (remove when AI)
-        onkey(lambda: self.move(5, 0), 'Right')
-        onkey(lambda: self.move(-5, 0), 'Left')
-        onkey(lambda: self.move(0, 5), 'Up')
-        onkey(lambda: self.move(0, -5), 'Down')
+        # onkey(lambda: self.move(5, 0), 'Right')
+        # onkey(lambda: self.move(-5, 0), 'Left')
+        # onkey(lambda: self.move(0, 5), 'Up')
+        # onkey(lambda: self.move(0, -5), 'Down')
         self.draw_world()
         self.run_game()
         done()
