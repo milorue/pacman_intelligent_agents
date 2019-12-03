@@ -84,6 +84,7 @@ class PacmanGame:
         if self.board.valid_move(self.pacman_object + direction):
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
+            self.board.update_pacman(self.pacman_object)
 
         position = self.board.get_offset(self.pacman_object)  # pacman's current position
         self.scoring(position)
