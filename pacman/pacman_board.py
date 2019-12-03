@@ -3,8 +3,9 @@ from freegames import floor, vector
 
 
 class PacmanBoard:
-    def __init__(self, tiles):
+    def __init__(self, tiles, pacman):
         self.tiles = tiles
+        self.pacman = pacman
 
     def get_offset(self, position):
         x = (floor(position.x, 20) + 200) / 20
@@ -25,6 +26,15 @@ class PacmanBoard:
 
         return position.x % 20 == 0 or position.y % 20 == 0
 
+    def update_pacman(self, pacman):
+        print("update pacman:", pacman)
+        self.pacman = pacman
+        print("self pacman:", self.pacman)
+
+    def get_pacman(self):
+        print("pacman:", self.pacman)
+
+        return self.pacman
 
     def moves_from(self, position):
         moves = []

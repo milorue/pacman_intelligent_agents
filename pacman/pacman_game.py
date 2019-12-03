@@ -84,6 +84,7 @@ class PacmanGame:
         if self.board.valid_move(self.pacman_object + direction):
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
+            self.board.update_pacman(self.pacman_object)
 
         position = self.board.get_offset(self.pacman_object)  # pacman's current position
         self.scoring(position)
@@ -94,6 +95,7 @@ class PacmanGame:
 
     def move_ghosts(self):
         for ghost in self.ghosts:
+            ghost.update_pacman(self.pacman_object)
             direction = ghost.move()
             object = vector(ghost.x, ghost.y)
             if self.board.valid_move(object + direction):
@@ -134,7 +136,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 1)  # loops make_moves at 80fps
+        ontimer(self.run_game, 8)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 

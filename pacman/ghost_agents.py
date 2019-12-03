@@ -1,3 +1,7 @@
+import collections
+import heapq
+
+import numpy as np
 from freegames import floor, vector
 from random import choice
 from queue import PriorityQueue
@@ -148,9 +152,114 @@ class GhostBetter:
 
         return valid_moves
 
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
     def update(self, new_location):
         self.x = new_location.x
         self.y = new_location.y
 
     def get_position(self):
         return self.board.make_vec(self.x, self.y)
+
+
+class GhostAStar:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+        self.moves = [  # speed
+            vector(5, 0),  # right
+            vector(-5, 0),  # left
+            vector(0, 5),  # up
+            vector(0, -5)  # down
+        ]
+
+        self.valid_moves_count = 0
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+
+        branch = a_star(self.board, obj, self.pacmanPos)
+        try:
+            self.direction = branch[1]-branch[0]
+        except:
+            return self.direction
+        return self.direction
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+
+class AStarNode:
+    def __init__(self, parent, position, distance_from_start, goal):
+        self.parent = parent
+        self.position = position
+        self.distance_from_start = distance_from_start
+        self.cost = sum(np.absolute(np.subtract(goal, position))) + distance_from_start
+
+    def __lt__(self, other):
+        return self.cost < other.cost
+
+    def __le__(self, other):
+        return self.cost <= other.cost
+
+    def __eq__(self, other):
+        return self.cost == other.cost
+
+    def __ne__(self, other):
+        return self.cost != other.cost
+
+    def __ge__(self, other):
+        return self.cost >= other.cost
+
+    def __gt__(self, other):
+        return self.cost > other.cost
+
+    def __repr__(self):
+        string = "Position: " + str(self.position) + "\n"
+        string += "distance_from_start: " + str(self.distance_from_start) + "\n"
+        string += "Cost: " + str(self.cost) + "\n"
+        return string
+
+
+def a_star(board, start_point, pacman):
+    """
+    :param start_point: Where you want the path to start
+    :param a_map: a map to analyze, not change
+    :return: a list of positions (x, y) that are the suggested path from current position to a goal
+    """
+
+    # initialize current position, root, and list of visited positions
+    visited_positions = set()
+    visited_positions.add(start_point)
+    heap = []
+    node = AStarNode(None, start_point, 0, pacman)
+    heapq.heappush(heap, node)
+    while node.position != pacman and heap:
+
+        node = heapq.heappop(heap)
+        visited_positions.add(node.position)
+        for move in board.moves_from(node.position):
+            position = node.position + move
+            if position not in visited_positions:
+                heapq.heappush(heap, AStarNode(node, position, node.distance_from_start + 1, pacman))
+
+    branch = collections.deque([])
+
+    while node is not None:
+        branch.append(node.position)
+        node = node.parent
+
+    branch.reverse()
+
+    return branch
