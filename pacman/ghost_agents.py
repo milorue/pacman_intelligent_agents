@@ -152,6 +152,9 @@ class GhostBetter:
 
         return valid_moves
 
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
     def update(self, new_location):
         self.x = new_location.x
         self.y = new_location.y
@@ -176,10 +179,13 @@ class GhostAStar:
 
         self.valid_moves_count = 0
 
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
     def move(self):
         obj = self.board.make_vec(self.x, self.y)
 
-        branch = a_star(self.board, obj, self.board.get_pacman())
+        branch = a_star(self.board, obj, self.pacmanPos)
         try:
             self.direction = branch[1]-branch[0]
         except:

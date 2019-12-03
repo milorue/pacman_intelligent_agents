@@ -27,9 +27,10 @@ class PacmanBoard:
         return position.x % 20 == 0 or position.y % 20 == 0
 
     def update_pacman(self, pacman):
-        #print("update pacman:", pacman)
+        print("update pacman:", pacman)
         self.pacman = pacman
-        #print("self pacman:", self.pacman)
+        print("self pacman:", self.pacman)
+
     def get_pacman(self):
         print("pacman:", self.pacman)
 

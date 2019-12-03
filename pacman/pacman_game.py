@@ -95,6 +95,7 @@ class PacmanGame:
 
     def move_ghosts(self):
         for ghost in self.ghosts:
+            ghost.update_pacman(self.pacman_object)
             direction = ghost.move()
             object = vector(ghost.x, ghost.y)
             if self.board.valid_move(object + direction):
@@ -135,7 +136,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 1)  # loops make_moves at 80fps
+        ontimer(self.run_game, 8)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
