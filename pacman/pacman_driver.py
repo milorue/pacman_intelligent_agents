@@ -10,12 +10,11 @@ from turtle import Terminator
 position = vector(-40, -80)
 direction = vector(0, -5)
 
-board = PacmanBoard(deepcopy(tiles), position)
+board = PacmanBoard(deepcopy(openTile), position)
 
 pacman = PacmanRandom(position, direction, board)
 pacmanBetter = PacmanBetterRandom(position, direction, board)
 human = HumanPacman(position, direction, board)
-
 
 ghost = vector(-180, 160)
 ghost2 = vector(-180, -160)
@@ -27,15 +26,14 @@ ghostDir2 = vector(0, -5)
 ghostDir3 = vector(-5, 0)
 
 blinky = GhostAStar(ghost, ghostDir, board, pacman)
-pinky = GhostBetter(ghost2, ghostDir1, board, pacman)
-inky = GhostBetter(ghost3, ghostDir2, board, pacman)
-clide = GhostBetter(ghost4, ghostDir3, board, pacman)
+pinky = GhostAStar(ghost2, ghostDir1, board, pacman)
+inky = GhostAStar(ghost3, ghostDir2, board, pacman)
+clide = GhostAStar(ghost4, ghostDir3, board, pacman)
 
 bae = GhostRandom(ghost, ghostDir, board)
 bae1 = GhostRandom(ghost2, ghostDir1, board)
 bae2 = GhostRandom(ghost3, ghostDir2, board)
 bae3 = GhostRandom(ghost4, ghostDir3, board)
-
 
 ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
@@ -45,7 +43,7 @@ def collect_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         start = datetime.now()
-        game = PacmanGame(deepcopy(board), deepcopy(human), deepcopy(ghostz))
+        game = PacmanGame(deepcopy(board), deepcopy(pacmanBetter), deepcopy(ghostz))
         try:
             game.game_setup()
         except SystemExit:

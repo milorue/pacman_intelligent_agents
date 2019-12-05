@@ -27,28 +27,37 @@ class PacmanBoard:
         return position.x % 20 == 0 or position.y % 20 == 0
 
     def update_pacman(self, pacman):
-        print("update pacman:", pacman)
         self.pacman = pacman
-        print("self pacman:", self.pacman)
 
     def get_pacman(self):
-        print("pacman:", self.pacman)
 
         return self.pacman
 
     def moves_from(self, position):
         moves = []
         possible = [
-            vector(10, 0),
-            vector(-10, 0),
-            vector(0, 10),
-            vector(0, -10)
+            vector(2.5, 0),
+            vector(-2.5, 0),
+            vector(0, 2.5),
+            vector(0, -2.5)
         ]
         for i in possible:
             if self.valid_move(position + i):
                 moves.append(i)
         return moves
 
+    def pacman_moves(self, position):
+        moves = []
+        possible = [
+            vector(5, 0),
+            vector(-5, 0),
+            vector(0, 5),
+            vector(0, -5)
+        ]
+        for i in possible:
+            if self.valid_move(position + i):
+                moves.append(i)
+        return moves
 
-    def make_vec(self, x ,y):
+    def make_vec(self, x, y):
         return vector(x, y)
