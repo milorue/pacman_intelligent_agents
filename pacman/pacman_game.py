@@ -24,6 +24,8 @@ class PacmanGame:
         self.aim = vector(0, -5)
         # self.going = self.pacman + self.aim
 
+        self.powerTimer = 30
+
     def build_board(self, x, y):  # replaces square function
         self.path.up()
         self.path.goto(x,y)
@@ -83,6 +85,8 @@ class PacmanGame:
         direction = self.pacman.move() # get agents direction it intends to go
         if self.board.valid_move(self.pacman_object + direction):
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
+            newPos = self.board.determine_teleports(self.pacman_object)
+            self.pacman_object = newPos
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
             self.board.update_pacman(self.pacman_object)
 
@@ -102,6 +106,8 @@ class PacmanGame:
             object = vector(ghost.x, ghost.y)
             if self.board.valid_move(object + direction):
                 object.move(direction)
+                newPos = self.board.determine_teleports(object)
+                object = newPos
                 ghost.update(object)
 
             if count == 1:

@@ -1,4 +1,5 @@
 from freegames import floor, vector
+from random import choice
 
 
 
@@ -41,6 +42,14 @@ class PacmanBoard:
             vector(0, 5),
             vector(0, -5)
         ]
+
+        # un-working rn
+        # if position == vector(100, 20) or position == vector(-180, 20):  # follow teleport on random chance for fairness
+        #     move = position + choice(possible)
+        #     while not self.valid_move(move):
+        #         move = position + choice(possible)
+        #     return move
+
         for i in possible:
             if self.valid_move(position + i):
                 moves.append(i)
@@ -79,6 +88,33 @@ class PacmanBoard:
 
     def make_vec(self, x, y):
         return vector(x, y)
+
+    def determine_teleports(self, position):
+        ports = [
+            vector(-200, 20),
+            vector(120, 20)
+        ]
+
+        if position == ports[0]:
+            position = ports[1]
+            return position
+
+        elif position == ports[1]:
+            position = ports[0]
+            return position
+
+        else:
+            return position
+
+    def power_pellets(self):
+        pellets = [
+            vector(-180, -160),
+            vector(100, -160),
+            vector(-180, 160),
+            vector(100, 160)
+        ]
+
+        return pellets
 
     def get_decision_points(self):
         points = [

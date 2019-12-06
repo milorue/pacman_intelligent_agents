@@ -218,13 +218,16 @@ class GhostAStarWithScatter:
         self.timer += 1
         obj = self.board.make_vec(self.x, self.y)
 
-        if self.timer <= 30:
+        if self.timer >= 5:
             homebases = [
                 vector(-180, 160),
                 vector(-180, -160),
                 vector(100, 160),
                 vector(100, -160)
             ]
+
+            if self.timer == 10:
+                self.timer = 0
 
             valid = self.board.moves_from(obj)
             invalid = self.board.invalid_moves_from(obj)
