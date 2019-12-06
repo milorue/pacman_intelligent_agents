@@ -43,7 +43,7 @@ def collect_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         start = datetime.now()
-        game = PacmanGame(deepcopy(board), deepcopy(pacmanBetter), deepcopy(ghostz))
+        game = PacmanGame(deepcopy(board), deepcopy(human), deepcopy(ghostz))
         try:
             game.game_setup()
         except SystemExit:

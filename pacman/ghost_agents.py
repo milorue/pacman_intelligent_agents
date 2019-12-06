@@ -181,8 +181,6 @@ class Pinky:
 
         valid = self.board.moves_from(obj)
         invalid = self.board.invalid_moves_from(obj)
-        print("valid: " + str(len(valid)))
-        print("invalid: " + str(len(invalid)))
         if len(valid) >= 3 or obj in self.board.get_decision_points():
             branch = a_star(self.board, obj, self.pacmanPos + vector(self.direction.x, self.direction.y * 3))
             try:
