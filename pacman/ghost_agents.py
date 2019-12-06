@@ -171,6 +171,8 @@ class Pinky:
         self.x = vec.x
         self.y = vec.y
 
+        self.timer = 30
+
         self.previous = vector(direction.x, -direction.y)
 
     def update_pacman(self, pacman):
@@ -178,6 +180,10 @@ class Pinky:
 
     def move(self):
         obj = self.board.make_vec(self.x, self.y)
+
+        while self.timer >= 0:
+            self.timer -= 1
+            return vector(0, -10)
 
         valid = self.board.moves_from(obj)
         invalid = self.board.invalid_moves_from(obj)
@@ -209,6 +215,8 @@ class GhostAStarWithScatter:
         self.y = vec.y
         self.timer = 0
 
+        self.waitTimer = 60
+
         self.valid_moves_count = 0
 
     def update_pacman(self, pacman):
@@ -217,6 +225,10 @@ class GhostAStarWithScatter:
     def move(self):
         self.timer += 1
         obj = self.board.make_vec(self.x, self.y)
+
+        while self.waitTimer >= 0:
+            self.waitTimer -= 1
+            return vector(0, 10)
 
         if self.timer >= 5:
             homebases = [

@@ -25,6 +25,7 @@ class PacmanGame:
         # self.going = self.pacman + self.aim
 
         self.powerTimer = 30
+        self.ghostTimer = 0
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()

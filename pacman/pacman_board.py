@@ -116,7 +116,7 @@ class PacmanBoard:
 
         return pellets
 
-    def get_decision_points(self):
+    def get_decision_points(self):  # decision mesh for default board (hard coded cause :P)
         points = [
             vector(-180, -160),
             vector(-180, -120),
