@@ -94,7 +94,9 @@ class PacmanGame:
         dot(20, 'yellow')
 
     def move_ghosts(self):
+        count = 0
         for ghost in self.ghosts:
+            count += 1
             ghost.update_pacman(self.pacman_object)
             direction = ghost.move()
             object = vector(ghost.x, ghost.y)
@@ -102,9 +104,22 @@ class PacmanGame:
                 object.move(direction)
                 ghost.update(object)
 
-            up()
-            goto(object.x + 10, object.y + 10)
-            dot(20, 'red')
+            if count == 1:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'pink')
+            elif count == 2:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'orange')
+            elif count == 3:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'light blue')
+            else:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'red')
 
     def run_game(self):
         self.end = datetime.now()

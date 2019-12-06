@@ -163,6 +163,114 @@ class GhostBetter:
         return self.board.make_vec(self.x, self.y)
 
 
+class Pinky:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+
+        self.previous = vector(direction.x, -direction.y)
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+
+        valid = self.board.moves_from(obj)
+        invalid = self.board.invalid_moves_from(obj)
+        print("valid: " + str(len(valid)))
+        print("invalid: " + str(len(invalid)))
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            branch = a_star(self.board, obj, self.pacmanPos + vector(self.direction.x, self.direction.y * 3))
+            try:
+                self.direction = branch[1] - branch[0]
+            except:
+                return self.direction
+            return self.direction
+
+        else:
+            return self.direction
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+
+class GhostAStarWithScatter:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+        self.timer = 0
+
+        self.valid_moves_count = 0
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        self.timer += 1
+        obj = self.board.make_vec(self.x, self.y)
+
+        if self.timer <= 30:
+            homebases = [
+                vector(-180, 160),
+                vector(-180, -160),
+                vector(100, 160),
+                vector(100, -160)
+            ]
+
+            valid = self.board.moves_from(obj)
+            invalid = self.board.invalid_moves_from(obj)
+            if len(valid) >= 3 or obj in self.board.get_decision_points():
+                branch = a_star(self.board, obj, choice(homebases))
+                try:
+                    self.direction = branch[1] - branch[0]
+
+                except:
+                    return self.direction
+                return self.direction
+
+            else:
+                return self.direction
+
+        else:
+            valid = self.board.moves_from(obj)
+            invalid = self.board.invalid_moves_from(obj)
+            if len(valid) >= 3:
+                branch = a_star(self.board, obj, self.pacmanPos)
+                try:
+                    self.direction = branch[1] - branch[0]
+                except:
+                    return self.direction
+                return self.direction
+
+            elif len(invalid) >= 2 and len(valid) >= 2:
+                branch = a_star(self.board, obj, self.pacmanPos)
+                try:
+                    self.direction = branch[1] - branch[0]
+                except:
+                    return self.direction
+                return self.direction
+            else:
+                return self.direction
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+
 class GhostAStar:
     def __init__(self, vec, direction, board, pacman):
         self.board = board
@@ -170,12 +278,6 @@ class GhostAStar:
         self.pacmanPos = pacman
         self.x = vec.x
         self.y = vec.y
-        self.moves = [  # speed
-            vector(5, 0),  # right
-            vector(-5, 0),  # left
-            vector(0, 5),  # up
-            vector(0, -5)  # down
-        ]
 
         self.valid_moves_count = 0
 
@@ -185,12 +287,18 @@ class GhostAStar:
     def move(self):
         obj = self.board.make_vec(self.x, self.y)
 
-        branch = a_star(self.board, obj, self.pacmanPos)
-        try:
-            self.direction = branch[1]-branch[0]
-        except:
+        valid = self.board.moves_from(obj)
+        invalid = self.board.invalid_moves_from(obj)
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            branch = a_star(self.board, obj, self.pacmanPos)
+            try:
+                self.direction = branch[1] - branch[0]
+            except:
+                return self.direction
             return self.direction
-        return self.direction
+
+        else:
+            return self.direction
 
     def update(self, new_location):
         self.x = new_location.x

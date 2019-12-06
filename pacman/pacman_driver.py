@@ -10,7 +10,7 @@ from turtle import Terminator
 position = vector(-40, -80)
 direction = vector(0, -5)
 
-board = PacmanBoard(deepcopy(openTile), position)
+board = PacmanBoard(deepcopy(tiles), position)
 
 pacman = PacmanRandom(position, direction, board)
 pacmanBetter = PacmanBetterRandom(position, direction, board)
@@ -26,8 +26,8 @@ ghostDir2 = vector(0, -5)
 ghostDir3 = vector(-5, 0)
 
 blinky = GhostAStar(ghost, ghostDir, board, pacman)
-pinky = GhostAStar(ghost2, ghostDir1, board, pacman)
-inky = GhostAStar(ghost3, ghostDir2, board, pacman)
+pinky = Pinky(ghost2, ghostDir1, board, pacman)
+inky = GhostAStarWithScatter(ghost3, ghostDir2, board, pacman)
 clide = GhostAStar(ghost4, ghostDir3, board, pacman)
 
 bae = GhostRandom(ghost, ghostDir, board)
@@ -35,7 +35,7 @@ bae1 = GhostRandom(ghost2, ghostDir1, board)
 bae2 = GhostRandom(ghost3, ghostDir2, board)
 bae3 = GhostRandom(ghost4, ghostDir3, board)
 
-ghostz = [blinky, pinky, inky, clide]
+ghostz = [blinky, pinky, inky, clide]  # blinky, inky, clide
 badGhosts = [bae, bae1, bae2, bae3]
 
 def collect_data(num_simulations):
