@@ -1,5 +1,5 @@
 from pacman.pacman_game import PacmanGame
-from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman
+from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman, PacmanGreedy
 from pacman.ghost_agents import *
 from copy import deepcopy
 from pacman.board_raw import *
@@ -15,6 +15,7 @@ board = PacmanBoard(deepcopy(tiles), position)
 pacman = PacmanRandom(position, direction, board)
 pacmanBetter = PacmanBetterRandom(position, direction, board)
 human = HumanPacman(position, direction, board)
+pacmanGreedy = PacmanGreedy(position, direction, board)
 
 ghost = vector(-180, 160)
 ghost2 = vector(-180, -160)
@@ -43,7 +44,7 @@ def collect_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         start = datetime.now()
-        game = PacmanGame(deepcopy(board), deepcopy(human), deepcopy(ghostz))
+        game = PacmanGame(deepcopy(board), deepcopy(pacmanGreedy), deepcopy(ghostz))
         try:
             game.game_setup()
         except SystemExit:

@@ -187,3 +187,16 @@ class PacmanBoard:
         ]
 
         return points
+
+    def valid_locations(self):
+        positions = []
+        for index in range(len(self.tiles)):
+            currTile = self.tiles[index]
+
+            if currTile == 1:
+                x = (index % 20) * 20 - 200
+                y = 180 - (index // 20) * 20
+                pos = vector(x, y)
+                positions.append(pos)
+
+        return positions
