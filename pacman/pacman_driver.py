@@ -210,12 +210,12 @@ def collect_structured_data(num_simulations):
                 data_all.append(data_round)
                 print("Game", game_counter, "Trial Set", str(sim_num + 1) + ":", datetime.now(), "\n", data_round)
             file_label = str(sim_num + 1) + "-" + 'data' + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
-
+        game_counter = 0
         print("dataset size after:", len(data_all))
         export_data(data_all, file_label=file_label)
 
 def main():
     collect_random_data(10)
-    # collect_structured_data(5)
+    collect_structured_data(1)
 
 main()
