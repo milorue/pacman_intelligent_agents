@@ -1,5 +1,5 @@
 from pacman.pacman_game import PacmanGame
-from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman
+from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman, PacmanGreedy
 from pacman.ghost_agents import *
 from copy import deepcopy
 from pacman.board_raw import *
@@ -40,7 +40,16 @@ bae3 = GhostRandom(ghost4, ghostDir3, board)
 ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
 
-def generate_ghosts(pacman_in):
+def generate_pacman(board_in):
+    pacman_types = ['PacmanBetterRandom', 'PacmanGreedy']
+    pacman_agent_type = choice(pacman_types)
+    if pacman_agent_type == 'PacmanBetterRandom':
+        pacman_agent = PacmanBetterRandom(position, direction, board_in)
+    else:
+        pacman_agent = PacmanGreedy(position, direction, board_in)
+    return pacman_agent
+
+def generate_ghosts(pacman_in, board_in):
     game_board = deepcopy(board)
     locations = [ghost, ghost2, ghost3, ghost4]
     directions = [ghostDir, ghostDir1, ghostDir2, ghostDir3]
@@ -61,7 +70,10 @@ def collect_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         start = datetime.now()
-        game = PacmanGame(deepcopy(board), deepcopy(pacmanBetter), deepcopy(generate_ghosts(pacmanBetter)))
+        game_board = deepcopy(board)
+        game_pacman = deepcopy(generate_pacman(game_board))
+        game_ghosts = deepcopy(generate_ghosts(game_pacman, game_board))
+        game = PacmanGame(game_board, game_pacman, game_ghosts)
         try:
             game.game_setup()
         except SystemExit:
