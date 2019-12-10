@@ -113,7 +113,7 @@ class PacmanGame:
 
             if count == 1:
                 up()
-                goto(object.x + 10, object.y + 10)
+                goto(object.x + 10, object.y + 10) # draws pinky
                 dot(20, 'pink')
             elif count == 2:
                 up()
@@ -158,7 +158,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 80)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 

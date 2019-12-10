@@ -146,12 +146,18 @@ class PacmanGreedy:
         self.goal = choice(self.board.valid_locations())
 
         self.valid_moves_count = 0
+        self.count = 0
 
     def move(self):
         obj = self.board.make_vec(self.x, self.y)
+        if self.count == 0:
+            self.goal = choice(self.board.valid_locations())
+
+        self.count += 1
 
         if obj == self.goal:
             self.goal = choice(self.board.valid_locations())
+
         else:
             branch = a_star(self.board, obj, self.goal)
             try:
