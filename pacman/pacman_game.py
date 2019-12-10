@@ -24,6 +24,9 @@ class PacmanGame:
         self.aim = vector(0, -5)
         # self.going = self.pacman + self.aim
 
+        self.powerTimer = 30
+        self.ghostTimer = 0
+
     def build_board(self, x, y):  # replaces square function
         self.path.up()
         self.path.goto(x,y)
@@ -83,6 +86,8 @@ class PacmanGame:
         direction = self.pacman.move() # get agents direction it intends to go
         if self.board.valid_move(self.pacman_object + direction):
             self.pacman_object.move(direction)  # our copy of the agent moves in the board
+            newPos = self.board.determine_teleports(self.pacman_object)
+            self.pacman_object = newPos
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
             self.board.update_pacman(self.pacman_object)
 
@@ -94,17 +99,34 @@ class PacmanGame:
         dot(20, 'yellow')
 
     def move_ghosts(self):
+        count = 0
         for ghost in self.ghosts:
+            count += 1
             ghost.update_pacman(self.pacman_object)
             direction = ghost.move()
             object = vector(ghost.x, ghost.y)
             if self.board.valid_move(object + direction):
                 object.move(direction)
+                newPos = self.board.determine_teleports(object)
+                object = newPos
                 ghost.update(object)
 
-            up()
-            goto(object.x + 10, object.y + 10)
-            dot(20, 'red')
+            if count == 1:
+                up()
+                goto(object.x + 10, object.y + 10) # draws pinky
+                dot(20, 'pink')
+            elif count == 2:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'orange')
+            elif count == 3:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'light blue')
+            else:
+                up()
+                goto(object.x + 10, object.y + 10)
+                dot(20, 'red')
 
     def run_game(self):
         self.end = datetime.now()
@@ -136,7 +158,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 40)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
