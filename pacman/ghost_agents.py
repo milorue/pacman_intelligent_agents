@@ -163,7 +163,7 @@ class GhostBetter:
         return self.board.make_vec(self.x, self.y)
 
 
-class Pinky:
+class GhostPinky:
     def __init__(self, vec, direction, board, pacman):
         self.board = board
         self.direction = direction
