@@ -7,7 +7,7 @@ from pacman.pacman_agents import PacmanRandom
 from datetime import *
 
 class PacmanGame:
-    def __init__(self, board, pacman, ghosts, frame_rate=80):
+    def __init__(self, board, pacman, ghosts):
         self.state = {'score': 0}
         self.board = board  # defines the board takes a array
         self.pacman = pacman  # defines location of pacman and initializes him
@@ -26,8 +26,6 @@ class PacmanGame:
 
         self.powerTimer = 30
         self.ghostTimer = 0
-
-        self.frame_rate = frame_rate
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()
@@ -115,7 +113,7 @@ class PacmanGame:
 
             if count == 1:
                 up()
-                goto(object.x + 10, object.y + 10)
+                goto(object.x + 10, object.y + 10) # draws pinky
                 dot(20, 'pink')
             elif count == 2:
                 up()
@@ -160,7 +158,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, self.frame_rate)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
