@@ -1,6 +1,6 @@
-from pacman.pacman_game import PacmanGame
-from pacman.pacman_agents import PacmanRandom, PacmanBetterRandom, HumanPacman, PacmanGreedy
 from pacman.ghost_agents import *
+from pacman.pacman_game import PacmanGame
+from pacman.pacman_agents import *
 from copy import deepcopy
 from pacman.board_raw import *
 from pacman.pacman_board import PacmanBoard
@@ -12,13 +12,6 @@ import itertools
 position = vector(-40, -80)
 direction = vector(0, -5)
 
-board = PacmanBoard(deepcopy(tiles), position)
-
-pacman = PacmanRandom(position, direction, board)
-pacmanBetter = PacmanBetterRandom(position, direction, board)
-human = HumanPacman(position, direction, board)
-
-
 ghost = vector(-180, 160)
 ghost2 = vector(-180, -160)
 ghost3 = vector(100, 160)
@@ -28,16 +21,26 @@ ghostDir1 = vector(0, 5)
 ghostDir2 = vector(0, -5)
 ghostDir3 = vector(-5, 0)
 
+ghostList = [ghost, ghost2, ghost3, ghost4]
+
+board = PacmanBoard(deepcopy(tiles), deepcopy(position), deepcopy(ghostList))
+
+pacman = PacmanRandom(position, direction, board)
+pacmanBetter = PacmanBetterRandom(position, direction, board)
+human = HumanPacman(position, direction, board)
+pacmanGreedy = PacmanGreedy(position, direction, board)
+pacmanSmart = SmartPacman(position, direction, board, ghostList)
+pacmanSimple = SimpleSmartPacman(position, direction, board, ghostList)
+
 blinky = GhostAStar(ghost, ghostDir, board, pacmanBetter)
-pinky = GhostBetter(ghost2, ghostDir1, board, pacmanBetter)
-inky = GhostBetter(ghost3, ghostDir2, board, pacmanBetter)
+pinky = GhostAStarWithScatter(ghost2, ghostDir1, board, pacmanBetter)
+inky = GhostPinky(ghost3, ghostDir2, board, pacmanBetter)
 clide = GhostBetter(ghost4, ghostDir3, board, pacmanBetter)
 
 bae = GhostRandom(ghost, ghostDir, board)
 bae1 = GhostRandom(ghost2, ghostDir1, board)
 bae2 = GhostRandom(ghost3, ghostDir2, board)
 bae3 = GhostRandom(ghost4, ghostDir3, board)
-
 
 ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
@@ -87,9 +90,10 @@ def collect_random_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         game_board = deepcopy(board)
-        game_pacman = deepcopy(generate_pacman(game_board))
-        game_ghosts = deepcopy(generate_ghosts(game_pacman, game_board))
-        game = PacmanGame(game_board, game_pacman, game_ghosts, frame_rate=10)
+        # game_pacman = deepcopy(generate_pacman(game_board))
+        game_pacman = deepcopy(pacmanSmart)
+        game_ghosts = deepcopy(ghostz)
+        game = PacmanGame(game_board, game_pacman, game_ghosts)
         try:
             start = datetime.now()
             game.game_setup()
@@ -106,7 +110,6 @@ def extract_game_data(game_in, start):
     data_round['score'] = int(game_in.state['score'])
     data_round['length'] = str(time_length)
     data_round['length_seconds'] = time_length.total_seconds()
-    data_round['frame_rate'] = int(game_in.frame_rate)
     data_round['pacman_pos_x'] = int(game_in.pacman.x)
     data_round['pacman_pos_y'] = int(game_in.pacman.y)
     data_round['pacman_type'] = str(game_in.pacman.__class__.__name__)
@@ -140,7 +143,7 @@ def collect_structured_data(num_simulations):
         game_board = deepcopy(board)
 
         # creates pacman possibilities
-        pacman_type_1 = PacmanBetterRandom(deepcopy(pacman_position), deepcopy(pacman_direction), game_board)
+        pacman_type_1 = SmartPacman(deepcopy(pacman_position), deepcopy(pacman_direction), game_board, ghostList)
         pacman_type_2 = PacmanGreedy(deepcopy(pacman_position), deepcopy(pacman_direction), game_board)
         
         ghost_possibilities = [
@@ -178,8 +181,10 @@ def collect_structured_data(num_simulations):
                 except:
                     pass
 
+            pacman_type_1.ghosts = ghost_scenario
+
             # plays game with pacman agent 1
-            pacman_game_1 = PacmanGame(game_board_item, deepcopy(pacman_type_1), deepcopy(ghost_scenario), frame_rate=10)
+            pacman_game_1 = PacmanGame(game_board_item, deepcopy(pacman_type_1), deepcopy(ghost_scenario))
             try:
                 start = datetime.now()
                 pacman_game_1.game_setup()
@@ -200,7 +205,7 @@ def collect_structured_data(num_simulations):
                     pass
 
             # plays game with pacman agent 2
-            pacman_game_2 = PacmanGame(game_board_item, deepcopy(pacman_type_2), deepcopy(ghost_scenario), frame_rate=10)
+            pacman_game_2 = PacmanGame(game_board_item, deepcopy(pacman_type_2), deepcopy(ghost_scenario))
             try:
                 start = datetime.now()
                 pacman_game_2.game_setup()
@@ -216,6 +221,6 @@ def collect_structured_data(num_simulations):
 
 def main():
     collect_random_data(10)
-    collect_structured_data(1)
+    # collect_structured_data(1)
 
 main()

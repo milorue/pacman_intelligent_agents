@@ -4,9 +4,10 @@ from random import choice
 
 
 class PacmanBoard:
-    def __init__(self, tiles, pacman):
+    def __init__(self, tiles, pacman, ghosts):
         self.tiles = tiles
         self.pacman = pacman
+        self.ghosts = ghosts
 
     def get_offset(self, position):
         x = (floor(position.x, 20) + 200) / 20
@@ -30,9 +31,14 @@ class PacmanBoard:
     def update_pacman(self, pacman):
         self.pacman = pacman
 
-    def get_pacman(self):
+    def update_ghosts(self, ghosts):
+        self.ghosts = ghosts
 
+    def get_pacman(self):
         return self.pacman
+
+    def get_ghosts(self):
+        return self.ghosts
 
     def moves_from(self, position):
         moves = []

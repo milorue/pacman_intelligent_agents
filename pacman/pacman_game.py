@@ -94,6 +94,8 @@ class PacmanGame:
         position = self.board.get_offset(self.pacman_object)  # pacman's current position
         self.scoring(position)
 
+        self.board.update_pacman(self.pacman_object)
+
         up()
         goto(self.pacman_object.x + 10, self.pacman_object.y + 10)
         dot(20, 'yellow')
@@ -128,6 +130,13 @@ class PacmanGame:
                 goto(object.x + 10, object.y + 10)
                 dot(20, 'red')
 
+        self.board.update_ghosts(self.ghosts)
+
+        for ghost in self.ghosts:
+            self.ghosts_objects.append(vector(ghost.x, ghost.y))
+
+        self.pacman.update_ghosts(self.ghosts_objects)
+
     def run_game(self):
         self.end = datetime.now()
         self.writer.undo()
@@ -158,7 +167,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 1)  # loops make_moves at 80fps
+        ontimer(self.run_game, 100)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
