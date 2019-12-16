@@ -8,16 +8,16 @@ from pacman.pacman_board import PacmanBoard
 position = vector(-40, -80)
 direction = vector(0, -5)
 
-ghost = vector(-180, 160)
+ghost1 = vector(-180, 160)
 ghost2 = vector(-180, -160)
 ghost3 = vector(100, 160)
 ghost4 = vector(100, -160)
-ghostDir = vector(5, 0)
-ghostDir1 = vector(0, 5)
-ghostDir2 = vector(0, -5)
-ghostDir3 = vector(-5, 0)
+ghostDir1 = vector(5, 0)
+ghostDir2 = vector(0, 5)
+ghostDir3 = vector(0, -5)
+ghostDir4 = vector(-5, 0)
 
-ghostList = [ghost, ghost2, ghost3, ghost4]
+ghostList = [ghost1, ghost2, ghost3, ghost4]
 
 board = PacmanBoard(deepcopy(tiles), deepcopy(position), deepcopy(ghostList))
 
@@ -27,10 +27,15 @@ human = HumanPacman(position, direction, board)
 pacmanGreedy = PacmanGreedy(position, direction, board)
 pacmanSmart = SmartPacman(position, direction, board, ghostList)
 
-blinky = GhostAStar(ghost, ghostDir, board, pacmanBetter)
-pinky = GhostBetter(ghost2, ghostDir1, board, pacmanBetter)
-inky = GhostBetter(ghost3, ghostDir2, board, pacmanBetter)
-clide = GhostBetter(ghost4, ghostDir3, board, pacmanBetter)
+blinky = GhostAStar(board, )
+pinky = GhostPAS(ghost2, ghostDir1, board, pacmanBetter, direction)
+inky = GhostPAS(ghost3, ghostDir2, board, pacmanBetter, direction)
+clide = GhostPAS(ghost4, ghostDir3, board, pacmanBetter, direction)
+
+blinky = GhostAStar(ghost, ghostDir, board, pacmanBetter, direction)
+pinky = GhostPAS(ghost2, ghostDir1, board, pacmanBetter, direction)
+inky = GhostPAS(ghost3, ghostDir2, board, pacmanBetter, direction)
+clide = GhostPAS(ghost4, ghostDir3, board, pacmanBetter, direction)
 
 ghostz = [blinky, pinky, inky, clide]
 

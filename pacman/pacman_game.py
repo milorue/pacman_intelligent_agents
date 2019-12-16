@@ -89,12 +89,12 @@ class PacmanGame:
             newPos = self.board.determine_teleports(self.pacman_object)
             self.pacman_object = newPos
             self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
-            self.board.update_pacman(self.pacman_object)
+            self.board.update_pacman(self.pacman_object, direction)
 
         position = self.board.get_offset(self.pacman_object)  # pacman's current position
         self.scoring(position)
 
-        self.board.update_pacman(self.pacman_object)
+        self.board.update_pacman(self.pacman_object, direction)
 
         up()
         goto(self.pacman_object.x + 10, self.pacman_object.y + 10)
@@ -104,7 +104,7 @@ class PacmanGame:
         count = 0
         for ghost in self.ghosts:
             count += 1
-            ghost.update_pacman(self.pacman_object)
+            ghost.update_pacman(self.pacman_object, direction)
             direction = ghost.move()
             object = vector(ghost.x, ghost.y)
             if self.board.valid_move(object + direction):

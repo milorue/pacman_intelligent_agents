@@ -1,12 +1,11 @@
 from freegames import floor, vector
-from random import choice
-
 
 
 class PacmanBoard:
-    def __init__(self, tiles, pacman, ghosts):
+    def __init__(self, tiles, pacman, pac_dir, ghosts):
         self.tiles = tiles
         self.pacman = pacman
+        self.pac_dir = pac_dir
         self.ghosts = ghosts
 
     def get_offset(self, position):

@@ -1,11 +1,5 @@
 from freegames import floor, vector
-from random import choice, randint
-from turtle import *
-import time
-
-import collections
-import heapq
-from queue import PriorityQueue
+from pacman.pathing_functions import *
 
 
 class PacmanRandom:
@@ -329,70 +323,3 @@ class SimpleSmartPacman:
             distances.append(disp)
 
         return distances
-
-
-class AStarNode:
-    def __init__(self, parent, position, distance_from_start, goal):
-        self.parent = parent
-        self.position = position
-        self.distance_from_start = distance_from_start
-        diff = goal - position
-        dist = abs(diff[0]) + abs(diff[1])
-        self.cost = dist + distance_from_start
-
-    def __lt__(self, other):
-        return self.cost < other.cost
-
-    def __le__(self, other):
-        return self.cost <= other.cost
-
-    def __eq__(self, other):
-        return self.cost == other.cost
-
-    def __ne__(self, other):
-        return self.cost != other.cost
-
-    def __ge__(self, other):
-        return self.cost >= other.cost
-
-    def __gt__(self, other):
-        return self.cost > other.cost
-
-    def __repr__(self):
-        string = "Position: " + str(self.position) + "\n"
-        string += "distance_from_start: " + str(self.distance_from_start) + "\n"
-        string += "Cost: " + str(self.cost) + "\n"
-        return string
-
-
-def a_star(board, start_point, pacman):
-    """
-    :param start_point: Where you want the path to start
-    :param a_map: a map to analyze, not change
-    :return: a list of positions (x, y) that are the suggested path from current position to a goal
-    """
-
-    # initialize current position, root, and list of visited positions
-    visited_positions = set()
-    visited_positions.add(start_point)
-    heap = []
-    node = AStarNode(None, start_point, 0, pacman)
-    heapq.heappush(heap, node)
-    while node.position != pacman and heap:
-
-        node = heapq.heappop(heap)
-        visited_positions.add(node.position)
-        for move in board.pacman_moves(node.position):
-            position = node.position + move
-            if position not in visited_positions:
-                heapq.heappush(heap, AStarNode(node, position, node.distance_from_start + 1, pacman))
-
-    branch = collections.deque([])
-
-    while node is not None:
-        branch.append(node.position)
-        node = node.parent
-
-    branch.reverse()
-
-    return branch
