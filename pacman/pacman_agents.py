@@ -201,7 +201,7 @@ class SmartPacman:
 
         self.proposed_location = board.make_vec(self.x, self.y)
 
-        self.minDist = 30
+        self.minDist = 1
 
     def move(self):
 

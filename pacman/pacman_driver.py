@@ -46,10 +46,12 @@ ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
 
 def generate_pacman(board_in):
-    pacman_types = ['PacmanBetterRandom', 'PacmanGreedy']
+    pacman_types = ['PacmanBetterRandom', 'PacmanGreedy', 'SmartPacman']
     pacman_agent_type = choice(pacman_types)
     if pacman_agent_type == 'PacmanBetterRandom':
         pacman_agent = PacmanBetterRandom(position, direction, board_in)
+    elif pacman_agent_type == 'SmartPacman':
+        pacman_agent = SmartPacman(position, direction, board_in, [])
     else:
         pacman_agent = PacmanGreedy(position, direction, board_in)
     return pacman_agent
@@ -58,7 +60,7 @@ def generate_ghosts(pacman_in, board_in, num_ghosts=4):
     game_board = deepcopy(board_in)
     locations = [ghost, ghost2, ghost3, ghost4]
     directions = [ghostDir, ghostDir1, ghostDir2, ghostDir3]
-    ghost_agent_types = ['GhostAStar', 'GhostBetter', 'GhostPinky','GhostAStarWithScatter']
+    ghost_agent_types = ['GhostAStar', 'GhostBetter', 'GhostPinky', 'GhostAStarWithScatter']
     ghost_agents = []
     for num in range(num_ghosts):
         place = locations[num % len(locations)]
@@ -90,9 +92,10 @@ def collect_random_data(num_simulations):
     for i in range(num_simulations):
         data_round = {}
         game_board = deepcopy(board)
-        # game_pacman = deepcopy(generate_pacman(game_board))
-        game_pacman = deepcopy(pacmanSmart)
-        game_ghosts = deepcopy(ghostz)
+        game_pacman = deepcopy(generate_pacman(game_board))
+        game_ghosts = deepcopy(generate_ghosts(game_pacman, game_board))
+        if game_pacman.__class__.__name__ == 'SmartPacman':
+            game_pacman.ghosts = game_ghosts
         game = PacmanGame(game_board, game_pacman, game_ghosts)
         try:
             start = datetime.now()
@@ -103,6 +106,59 @@ def collect_random_data(num_simulations):
             print(i + 1, ":", data_round)
     print(len(data_all))
     export_data(data_all)
+
+def collect_data(num_simulations, num_iterations):
+    for h in range(num_iterations):
+        data_all = []
+        for i in range(num_simulations):
+
+            data_round = {}
+            game_board = deepcopy(board)
+
+            pacman1 = PacmanBetterRandom(position, direction, game_board)
+
+            game_ghosts_general = generate_ghosts(pacman1, game_board)
+
+            game_ghosts1 = deepcopy(game_ghosts_general)
+            for ghost in game_ghosts1:
+                ghost.pacmanPos = pacman1
+            game1 = PacmanGame(deepcopy(game_board), pacman1, game_ghosts1)
+            try:
+                start = datetime.now()
+                game1.game_setup()
+            except SystemExit:
+                data_round = extract_game_data(game1, start)
+                data_all.append(data_round)
+                print(i + 1, "-", datetime.now(), ":", data_round)
+
+            pacman2 = PacmanGreedy(position, direction, game_board)
+            game_ghosts2 = deepcopy(game_ghosts_general)
+            for ghost in game_ghosts2:
+                ghost.pacmanPos = pacman2
+            game2 = PacmanGame(deepcopy(game_board), pacman2, game_ghosts2)
+            try:
+                start = datetime.now()
+                game2.game_setup()
+            except SystemExit:
+                data_round = extract_game_data(game2, start)
+                data_all.append(data_round)
+                print(i + 1, "-", datetime.now(), ":", data_round)
+
+            game_ghosts3 = deepcopy(game_ghosts_general)
+            pacman3 = SmartPacman(position, direction, board, game_ghosts3)
+            for ghost in game_ghosts3:
+                ghost.pacmanPos = pacman3
+            game3 = PacmanGame(deepcopy(game_board), pacman3, game_ghosts3)
+            try:
+                start = datetime.now()
+                game3.game_setup()
+            except SystemExit:
+                data_round = extract_game_data(game3, start)
+                data_all.append(data_round)
+                print(i + 1, "-", datetime.now(), ":", data_round)
+
+        export_data(data_all)
+
 
 def extract_game_data(game_in, start):
     data_round = {}
@@ -131,96 +187,8 @@ def extract_game_data(game_in, start):
         data_round[label] = str(ghost_item.__class__.__name__)
     return data_round
 
-def collect_structured_data(num_simulations):
-    pacman_position = vector(-40, -80)
-    pacman_direction = vector(0, -5)
-    ghost_locations = [deepcopy(ghost), deepcopy(ghost2), deepcopy(ghost3), deepcopy(ghost4)]
-    ghost_directions = [deepcopy(ghostDir), deepcopy(ghostDir1), deepcopy(ghostDir2), deepcopy(ghostDir3)]
-    game_counter = 0
-    for sim_num in range(num_simulations):
-        data_all = []
-        print("dataset size before:", len(data_all))
-        game_board = deepcopy(board)
-
-        # creates pacman possibilities
-        pacman_type_1 = SmartPacman(deepcopy(pacman_position), deepcopy(pacman_direction), game_board, ghostList)
-        pacman_type_2 = PacmanGreedy(deepcopy(pacman_position), deepcopy(pacman_direction), game_board)
-        
-        ghost_possibilities = [
-            GhostBetter(vector(0,0), vector(0,0), game_board, pacman_type_1),
-            GhostAStar(vector(0,0), vector(0,0), game_board, pacman_type_1),
-            GhostAStarWithScatter(vector(0,0), vector(0,0), game_board, pacman_type_1),
-            GhostPinky(vector(0,0), vector(0,0), game_board, pacman_type_1)
-        ]
-
-        # calculates all possible ghost type scenarios for pacman 1
-        possibilities_size = len(ghost_possibilities)
-        ghost_tuples = list(itertools.product(range(possibilities_size), repeat=4))
-        ghost_lists = []
-        for tuple in ghost_tuples:
-            ghost_lists.append([])
-            tuple_list = list(tuple)
-            for i in range(len(tuple_list)):
-                # modifies ghost
-                game_ghost = deepcopy(ghost_possibilities[tuple_list[i]])
-                game_ghost.x = ghost_locations[i].x
-                game_ghost.y = ghost_locations[i].y
-                game_ghost.direction = ghost_directions[i]
-                ghost_lists[-1].append(game_ghost)
-
-        # simulation for each generated ghost scenario
-        for ghost_scenario in ghost_lists:
-            # resets game board
-            game_board_item = deepcopy(game_board)
-
-            # resets some ghost properties (necessary for game mechanics)
-            for ghost_item in ghost_scenario:
-                try:
-                    ghost_item.board = game_board_item
-                    ghost_item.pacmanPos = pacman_type_1
-                except:
-                    pass
-
-            pacman_type_1.ghosts = ghost_scenario
-
-            # plays game with pacman agent 1
-            pacman_game_1 = PacmanGame(game_board_item, deepcopy(pacman_type_1), deepcopy(ghost_scenario))
-            try:
-                start = datetime.now()
-                pacman_game_1.game_setup()
-            except SystemExit:
-                game_counter = game_counter + 1
-                data_round = extract_game_data(pacman_game_1, start)
-                data_all.append(data_round)
-                print("Game",game_counter,"Trial Set", str(sim_num + 1) + ":", datetime.now(),"\n",data_round)
-
-            # resets game board
-            game_board_item = deepcopy(game_board)
-            # resets ghost properties (necessary for game mechanics)
-            for ghost_item in ghost_scenario:
-                try:
-                    ghost_item.board = game_board_item
-                    ghost_item.pacmanPos = pacman_type_2
-                except:
-                    pass
-
-            # plays game with pacman agent 2
-            pacman_game_2 = PacmanGame(game_board_item, deepcopy(pacman_type_2), deepcopy(ghost_scenario))
-            try:
-                start = datetime.now()
-                pacman_game_2.game_setup()
-            except SystemExit:
-                game_counter = game_counter + 1
-                data_round = extract_game_data(pacman_game_2, start)
-                data_all.append(data_round)
-                print("Game", game_counter, "Trial Set", str(sim_num + 1) + ":", datetime.now(), "\n", data_round)
-            file_label = str(sim_num + 1) + "-" + 'data' + datetime.now().strftime("%Y%m%d%H%M%S") + ".csv"
-        game_counter = 0
-        print("dataset size after:", len(data_all))
-        export_data(data_all, file_label=file_label)
-
 def main():
-    collect_random_data(10)
-    # collect_structured_data(1)
+    # collect_random_data(10)
+    collect_data(100, 5)
 
 main()
