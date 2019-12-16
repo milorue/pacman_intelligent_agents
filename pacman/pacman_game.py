@@ -167,7 +167,7 @@ class PacmanGame:
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
