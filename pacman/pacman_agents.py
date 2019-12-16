@@ -2,6 +2,25 @@ from freegames import floor, vector
 from pacman.pathing_functions import *
 
 
+class AbstractPacman:
+    def __init__(self, board, location):
+        self.board = board
+        self.pos = location
+        self.direction = choice(board.moves_from(location))
+        self.moves = [  # speed
+            vector(10, 0),  # right
+            vector(-10, 0),  # left
+            vector(0, 10),  # up
+            vector(0, -10)  # down
+        ]
+
+    def move(self):
+        pass
+
+    def update(self, new_location):
+        self.pos = new_location
+
+
 class PacmanRandom:
     def __init__(self, vec, direction, board):
         self.board = board
