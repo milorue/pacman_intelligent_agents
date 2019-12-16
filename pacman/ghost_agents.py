@@ -1,7 +1,6 @@
 import collections
 import heapq
 
-import numpy as np
 from freegames import floor, vector
 from random import choice
 from queue import PriorityQueue
@@ -326,7 +325,9 @@ class AStarNode:
         self.parent = parent
         self.position = position
         self.distance_from_start = distance_from_start
-        self.cost = sum(np.absolute(np.subtract(goal, position))) + distance_from_start
+        diff = goal - position
+        dist = abs(diff[0]) + abs(diff[1])
+        self.cost = dist + distance_from_start
 
     def __lt__(self, other):
         return self.cost < other.cost
