@@ -23,7 +23,7 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 <!-- - **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location. -->
 
-- **PacmanMC:** Uses Monte Carlo tree search to choose a move when at a junction.
+- **PacmanMC:** Uses Monte Carlo tree search to choose a move when at a junction. (work in progress)
 
 <!-- - **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman. -->
 
@@ -68,12 +68,15 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 The following graphs were created after collecting data from multiple simulations of Pacman with varying ghost AI types and pacman AI types.
 
-![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/count-capture_type.png)
-![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-capture_type.png)
-![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-pacman_type.png)
-![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-capture_type.png)
-![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-pacman_type.png)
+![description](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/count-capture_type.png)
 
+![description](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-capture_type.png)
+
+![description](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-pacman_type.png)
+
+![description](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-capture_type.png)
+
+![description](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-pacman_type.png)
 
 ## Original Code Source
 https://github.com/grantjenks/free-python-games/blob/master/freegames/pacman.py
