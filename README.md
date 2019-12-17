@@ -1,5 +1,7 @@
-# Project: Pacman Agents
-Intelligent Agents that play Pacman
+# Project: Pacman (and Ghost) AI
+
+## Description
+This project implemented different Artificial Intelligence approaches for the ghosts to kill pacman and for pacman to score more points and stay alive longer.
 
 ## PEAS
 - **Performance Measures:** Final game score, total survival time
@@ -10,7 +12,7 @@ Intelligent Agents that play Pacman
 
 - **Actuators (Ghost):** At junction: Legal move (Up, Down, Left, Right)
 
-- **Sensors:** Board, location of pellets, location of all agents
+- **Sensors:** Board, location of pellets, location of all agents (ghosts, pacman)
 
 ## Agent Definition
 - **PacmanHuman:** Human controlled agent for validation Ghost agent validation.
@@ -19,11 +21,11 @@ Intelligent Agents that play Pacman
 
 - **GhostRandom:** Random simple reflex agent.
 
-- **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location.
+<--! - **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location. -->
 
-- **GhostMCTS:** Uses Monte Carlo tree search to choose a move when at a junction.
+<--! - **GhostMCTS:** Uses Monte Carlo tree search to choose a move when at a junction. -->
 
-- **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman.
+<--! - **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman. -->
 
 ## Work Distribution
 
@@ -48,12 +50,26 @@ Intelligent Agents that play Pacman
 
 - **Gabe:** (Ghost Definitions | Monte Carlo Search)
 
-## Agent Interface
+### (ending 12/10/19)
+- **Milo:** (Fun ghost implementations including "Follow the Leader")
 
-## Simulation Interface
+- **Justin:** (Data Collection Methods, Performance Measures | Pacman A-Star Search)
 
-## Advanced AI
-- **Multi-Agent Cooperative**
-- **MonteC Carlo Search**
+- **Gabe:** (Revised A Star Search | Clean up interface)
 
-## Unit Testing Framework
+### (ending 12/17/19)
+- **Milo:** (Fun ghost implementations including "Follow the Leader")
+
+- **Justin:** (Pacman A-Star Search | Data Collection Methods)
+
+- **Gabe:** (Clean up interface)
+
+<--! ## Agent Interface -->
+
+<--! ## Simulation Interface -->
+
+<--! ## Advanced AI -->
+<--! - **Multi-Agent Cooperative** -->
+<--! - **MonteC Carlo Search** -->
+
+<--! ## Unit Testing Framework -->
