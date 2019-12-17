@@ -342,6 +342,46 @@ class GhostAStar:
         pass
 
 
+class GhostBS:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+
+        self.valid_moves_count = 0
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+
+        valid = self.board.pacman_moves(obj)
+        invalid = self.board.invalid_moves_from(obj)
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            branch = a_star(self.board, obj, self.pacmanPos)
+            try:
+                self.direction = branch[1] - branch[0]
+            except:
+                return self.direction
+            return self.direction
+
+        else:
+            return self.direction
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+    def get_ghosts(self, ghosts):
+        pass
+
+
 class GhostRandomFollow:
     def __init__(self, vec, direction, board, pacman):
         self.board = board

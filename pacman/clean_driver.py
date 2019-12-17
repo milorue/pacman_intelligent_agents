@@ -46,6 +46,11 @@ dumbky = GhostBetter(ghost2, ghostDir1, board, pacman)
 dumbit = GhostBetter(ghost3, ghostDir2, board, pacman)
 dumby = GhostBetter(ghost4, ghostDir3, board, pacman)
 
+help = GhostBS(ghost, ghostDir, board, pacman)
+me = GhostBS(ghost2, ghostDir1, board, pacman)
+out = GhostBS(ghost3, ghostDir2, board, pacman)
+please = GhostBS(ghost4, ghostDir3, board, pacman)
+
 gogo = GhostPinky(ghost, ghostDir, board, pacman)
 dodo = GhostAStar(ghost2, ghostDir1, board, pacman)
 bobo = GhostAStar(ghost3, ghostDir2, board, pacman)
@@ -55,8 +60,9 @@ ghostsAllRandom = [dumbo, dumbky, dumbit, dumby]
 ghostsAllSmart = [blinky, pinky, inky, clide]
 ghostsHalfRandom = [stinky, rinky, tinker, green_uggs]
 ghostsOddity = [bobo, dodo, gogo, toto]
+ghostsHELP = [help, me, out, please]
 
-fullList = [ghostsAllSmart, ghostsHalfRandom, ghostsAllRandom, ghostsOddity]
+fullList = [ghostsAllRandom, ghostsHalfRandom, ghostsOddity, ghostsAllSmart, ghostsHELP]
 
 
 def namestr(obj, namespace):
@@ -69,8 +75,9 @@ def randomize_ghosts(ghost_list):  # takes a list of lists of ghosts and returns
     return out
 
 
-for i in range(10):
-    ghostz = randomize_ghosts(fullList)
+for i in range(5):
+    ghostz = fullList[i]
+    print(namestr(ghostz, globals()))
     game = PacmanGame(deepcopy(board), deepcopy(pacman), deepcopy(ghostz))
     try:
         start = datetime.now()
