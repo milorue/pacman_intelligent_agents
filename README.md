@@ -97,5 +97,7 @@ These graphs display the average time Pacman stays alive before it is captured b
 
 Notice the SmartPacman agent stays alive the longest on average for each of the different Ghost AI implementations. In addition, notice the second-best performing agent with regards to maximizing playing time is the PacmanBetterRandom agent. The PacmanGreedy is the worst agent with regards to maximizing playing time.
 
-## Original Code Source
-https://github.com/grantjenks/free-python-games/blob/master/freegames/pacman.py
+## Research Sources
+original code source: https://github.com/grantjenks/free-python-games/blob/master/freegames/pacman.py
+
+Monte Carlo research source: https://towardsdatascience.com/monte-carlo-tree-search-158a917a8baa
