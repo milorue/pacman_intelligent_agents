@@ -4,6 +4,7 @@ from pacman.pacman_agents import *
 from copy import deepcopy
 from pacman.board_raw import *
 from pacman.pacman_board import PacmanBoard
+from datetime import *
 
 position = vector(-40, -80)  # pacman position
 direction = vector(0, -5)  # pacman direction
@@ -28,17 +29,17 @@ human = HumanPacman(position, direction, board)
 pacmanGreedy = PacmanGreedy(position, direction, board)
 pacmanSmart = SmartPacman(position, direction, board, ghostList)
 
-pacman = pacmanSmart  # set this to change pacman (change to human for demo)
+pacman = human  # set this to change pacman (change to human for demo)
 
 blinky = GhostAStar(ghost, ghostDir, board, pacman)
 pinky = GhostAStar(ghost2, ghostDir1, board, pacman)
 inky = GhostAStar(ghost3, ghostDir2, board, pacman)
 clide = GhostAStar(ghost4, ghostDir3, board, pacman)
 
-stinky = GhostAStarWithScatter(ghost, ghostDir, board, pacman)
-rinky = GhostRandomFollow(ghost2, ghostDir1, board, pacman)
+stinky = GhostAStar(ghost, ghostDir, board, pacman)
+rinky = GhostBetter(ghost2, ghostDir1, board, pacman)
 tinker = GhostPinky(ghost3, ghostDir2, board, pacman)
-green_uggs = GhostFollowLeader(ghost4, ghostDir3, board, pacman, ghostList)
+green_uggs = GhostBetter(ghost4, ghostDir3, board, pacman)
 
 dumbo = GhostBetter(ghost, ghostDir, board, pacman)
 dumbky = GhostBetter(ghost2, ghostDir1, board, pacman)
@@ -46,16 +47,16 @@ dumbit = GhostBetter(ghost3, ghostDir2, board, pacman)
 dumby = GhostBetter(ghost4, ghostDir3, board, pacman)
 
 gogo = GhostPinky(ghost, ghostDir, board, pacman)
-dodo = GhostRandomFollow(ghost2, ghostDir1, board, pacman)
+dodo = GhostAStar(ghost2, ghostDir1, board, pacman)
 bobo = GhostAStar(ghost3, ghostDir2, board, pacman)
 toto = GhostFollowLeader(ghost4, ghostDir3, board, pacman, ghostList)
 
-ghostsDumb = [dumbo, dumbky, dumbit, dumby]
-ghostsUnfair = [blinky, pinky, inky, clide]
-ghostsWeird = [stinky, rinky, tinker, green_uggs]
+ghostsAllRandom = [dumbo, dumbky, dumbit, dumby]
+ghostsAllSmart = [blinky, pinky, inky, clide]
+ghostsHalfRandom = [stinky, rinky, tinker, green_uggs]
 ghostsOddity = [bobo, dodo, gogo, toto]
 
-fullList = [ghostsUnfair, ghostsWeird, ghostsDumb, ghostsOddity]
+fullList = [ghostsAllSmart, ghostsHalfRandom, ghostsAllRandom, ghostsOddity]
 
 
 def namestr(obj, namespace):
@@ -72,6 +73,8 @@ for i in range(10):
     ghostz = randomize_ghosts(fullList)
     game = PacmanGame(deepcopy(board), deepcopy(pacman), deepcopy(ghostz))
     try:
+        start = datetime.now()
         game.game_setup()
     except SystemExit:
-        print("exited")
+        data_round = game.state['score']
+        print(i + 1, ":", data_round)
