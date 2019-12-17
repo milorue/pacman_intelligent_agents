@@ -112,6 +112,7 @@ class PacmanGame:
                 newPos = self.board.determine_teleports(object)
                 object = newPos
                 ghost.update(object)
+                ghost.get_ghosts(self.ghosts)
 
             if count == 1:
                 up()

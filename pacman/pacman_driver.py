@@ -37,6 +37,11 @@ pinky = GhostAStarWithScatter(ghost2, ghostDir1, board, pacmanBetter)
 inky = GhostPinky(ghost3, ghostDir2, board, pacmanBetter)
 clide = GhostBetter(ghost4, ghostDir3, board, pacmanBetter)
 
+ghostFollow1 = GhostRandomFollow(ghost, ghostDir, board, pacmanBetter)
+ghostFollow2 = GhostRandomFollow(ghost2, ghostDir1, board, pacmanBetter)
+ghostFollow3 = GhostRandomFollow(ghost3, ghostDir2, board, pacmanBetter)
+ghostFollow4 = GhostRandomFollow(ghost4, ghostDir3, board, pacmanBetter)
+
 bae = GhostRandom(ghost, ghostDir, board)
 bae1 = GhostRandom(ghost2, ghostDir1, board)
 bae2 = GhostRandom(ghost3, ghostDir2, board)
@@ -44,6 +49,8 @@ bae3 = GhostRandom(ghost4, ghostDir3, board)
 
 ghostz = [blinky, pinky, inky, clide]
 badGhosts = [bae, bae1, bae2, bae3]
+trails = [ghostFollow1, ghostFollow2, ghostFollow3, ghostFollow4]
+
 
 def generate_pacman(board_in):
     pacman_types = ['PacmanBetterRandom', 'PacmanGreedy']
@@ -92,7 +99,7 @@ def collect_random_data(num_simulations):
         game_board = deepcopy(board)
         # game_pacman = deepcopy(generate_pacman(game_board))
         game_pacman = deepcopy(pacmanSmart)
-        game_ghosts = deepcopy(ghostz)
+        game_ghosts = deepcopy(trails)
         game = PacmanGame(game_board, game_pacman, game_ghosts)
         try:
             start = datetime.now()
