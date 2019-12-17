@@ -21,11 +21,11 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 - **GhostRandom:** Random simple reflex agent.
 
-<--! - **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location. -->
+<!-- - **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location. -->
 
-<--! - **GhostMCTS:** Uses Monte Carlo tree search to choose a move when at a junction. -->
+<!-- - **GhostMCTS:** Uses Monte Carlo tree search to choose a move when at a junction. -->
 
-<--! - **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman. -->
+<!-- - **GhostSA:** Uses Simulated Annealing to learn what actions will be most likely to capture Pacman. -->
 
 ## Work Distribution
 
@@ -64,12 +64,12 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 - **Gabe:** (Clean up interface)
 
-<--! ## Agent Interface -->
+<!-- ## Agent Interface -->
 
-<--! ## Simulation Interface -->
+<!-- ## Simulation Interface -->
 
-<--! ## Advanced AI -->
-<--! - **Multi-Agent Cooperative** -->
-<--! - **MonteC Carlo Search** -->
+<!-- ## Advanced AI -->
+<!-- - **Multi-Agent Cooperative** -->
+<!-- - **MonteC Carlo Search** -->
 
-<--! ## Unit Testing Framework -->
+<!-- ## Unit Testing Framework -->
