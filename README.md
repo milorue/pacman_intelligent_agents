@@ -1,4 +1,5 @@
 # Project: Pacman (and Ghost) AI
+Milo Rue, Gabe Pesco, Justin Moczynski
 
 ## Description
 This project implemented different Artificial Intelligence approaches for the ghosts to kill pacman and for pacman to score more points and stay alive longer.
@@ -6,7 +7,7 @@ This project implemented different Artificial Intelligence approaches for the gh
 ## PEAS
 - **Performance Measures:** Final game score, total survival time
 
-- **Environment:** Board, pellets, power pellets
+- **Environment:** Board, pellets
 
 - **Actuators (Pacman):** At any time: Legal move (Up, Down, Left, Right)
 
@@ -27,7 +28,7 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 - **GhostAStar:** Agent whose objective is to kill pacman using A-Star search technique
 
-- **GhostAStarWithScatter:** Agent whose objective is to kill pacman using A-Star search technique and disperses away from Pacman when Pacman gets too close
+- **GhostAStarWithScatter:** Agent whose objective is to kill pacman using A-Star search technique with randomly delays
 
 - **GhostPinky:** Agent whose objective is to kill pacman using A-Star search technique after waiting at the start of the game
 <!-- - **GhostGBFS:** Takes the move that moves them closest to Pacman at his current location. -->
@@ -67,11 +68,11 @@ This project implemented different Artificial Intelligence approaches for the gh
 - **Gabe:** (Revised A Star Search | Clean up interface)
 
 ### (ending 12/17/19)
-- **Milo:** (Fun ghost implementations including "Follow the Leader")
+- **Milo:** (progress on Fun ghost implementations including "Follow the Leader")
 
 - **Justin:** (Pacman A-Star Search | Data Collection Methods)
 
-- **Gabe:** (Clean up interface | Monte Carlo Implementation)
+- **Gabe:** (Clean up interface | progress on Monte Carlo Implementation)
 
 ## Results
 
