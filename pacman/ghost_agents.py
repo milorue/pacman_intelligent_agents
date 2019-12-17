@@ -143,12 +143,13 @@ class GhostAStarWithScatter:
 
 class GhostAStar(AbstractGhost):
     def move(self):
-        branch = a_star(self.board, obj, self.pacmanPos)
+        branch = a_star(self.board, self.pos, self.board.pacman.pos)
         try:
             self.direction = branch[1] - branch[0]
         except IndexError:
             pass
         return self.direction
+
 
 class GhostProjAStar(AbstractGhost):
     '''
@@ -156,7 +157,19 @@ class GhostProjAStar(AbstractGhost):
     '''
 
     def move(self):
-        return proj_move(self.board, self.pos, self.direction, self.board.pacman, self.board.pacman.direction)
+        pac_pos = self.board.pacman.pos
+        pac_dir = self.board.pacman.direction
+        diff = self.pos - pac_pos
+        distance = abs(diff[0]) + abs(diff[1])
+        pac_proj = forward_proj(self.board, pac_pos, pac_dir, round(distance / 2))
+        branch = a_star(self.board, self.pos, pac_proj)
+
+        try:
+            self.direction = branch[1] - branch[0]
+        except IndexError:
+            pass
+        return self.direction
+
 
 class GhostRandom:
     def __init__(self, vec, direction, board):

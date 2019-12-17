@@ -1,26 +1,25 @@
 from freegames import floor, vector
-
+from pacman.pathing_functions import *
 
 class PacmanBoard:
-    def __init__(self, tiles, pacman, pac_dir, ghosts):
+    def __init__(self, tiles):
         self.tiles = tiles
+        self.pacman = 0
+        self.ghosts = 0
+
+    def define_pacman(self, pacman):
         self.pacman = pacman
-        self.pac_dir = pac_dir
+
+    def define_ghosts(self, ghosts):
         self.ghosts = ghosts
 
-    def get_offset(self, position):
-        x = (floor(position.x, 20) + 200) / 20
-        y = (180 - floor(position.y, 20)) / 20
-        offset = int(x + y * 20)
-        return offset
-
     def valid_move(self, position):
-        offset = self.get_offset(position)
+        offset = get_offset(position)
 
         if self.tiles[offset] == 0:
             return False
 
-        offset = self.get_offset(position + 19)
+        offset = get_offset(position + 19)
 
         if self.tiles[offset] == 0:
             return False
@@ -47,13 +46,6 @@ class PacmanBoard:
             vector(0, 5),
             vector(0, -5)
         ]
-
-        # un-working rn
-        # if position == vector(100, 20) or position == vector(-180, 20):  # follow teleport on random chance for fairness
-        #     move = position + choice(possible)
-        #     while not self.valid_move(move):
-        #         move = position + choice(possible)
-        #     return move
 
         for i in possible:
             if self.valid_move(position + i):

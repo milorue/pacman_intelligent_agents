@@ -1,7 +1,14 @@
 import collections
 import heapq
 from random import choice
+from freegames import floor, vector
 
+
+def get_offset(position):
+    x = (floor(position.x, 20) + 200) / 20
+    y = (180 - floor(position.y, 20)) / 20
+    offset = int(x + y * 20)
+    return offset
 
 class AStarNode:
     def __init__(self, parent, position, distance_from_start, goal):
@@ -72,15 +79,16 @@ def a_star(board, start_point, end_point):
 
 
 def forward_proj(board, pos, dir, dist):
-    print("pos:", pos)
+    """print("pos:", pos)
     print("dir:", dir)
-    print("dist:", dist)
+    print("dist:", dist)"""
+
     while dist > 0:
-        moves = board.moves_from(pos)
+        moves = board.pacman_moves(pos)
         if dir not in moves:
             dir = choice(moves)
         pos += dir
-        dist -= abs(dir[0]) + abs(dir[1])
+        dist -= (abs(dir[0]) + abs(dir[1]))
     return pos
 
 
@@ -99,9 +107,7 @@ def proj_move(board, ghost_pos, ghost_dir, pac_pos, pac_dir):
 
     diff = ghost_pos - pac_pos
     distance = abs(diff[0]) + abs(diff[1])
-    move = board.moves_from(ghost_pos)[0]
-    speed = (abs(move[0]) + abs(move[1])) / 10
-    pac_proj = forward_proj(board, pac_pos, pac_dir, round(distance * speed))
+    pac_proj = forward_proj(board, pac_pos, pac_dir, round(distance / 2))
     branch = a_star(board, ghost_pos, pac_proj)
 
     try:

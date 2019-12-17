@@ -5,6 +5,7 @@ from turtle import *
 from freegames import floor, vector
 from pacman.pacman_agents import PacmanRandom
 from datetime import *
+from pacman.pathing_functions import *
 
 class PacmanGame:
     def __init__(self, board, pacman, ghosts):
@@ -13,11 +14,11 @@ class PacmanGame:
         self.pacman = pacman  # defines location of pacman and initializes him
         self.ghosts = ghosts  # defines the locations and faces of ghosts
 
-        self.pacman_object = vector(self.pacman.x, self.pacman.y)
-        self.ghosts_objects = []
+        self.pac_pos = self.pacman.pos
+        self.ghost_positions = []
 
         for ghost in self.ghosts:
-            self.ghosts_objects.append(vector(ghost.x, ghost.y))
+            self.ghost_positions.append(ghost.pos)
 
         self.path = Turtle(visible=False)
         self.writer = Turtle(visible=False)
@@ -29,7 +30,7 @@ class PacmanGame:
 
     def build_board(self, x, y):  # replaces square function
         self.path.up()
-        self.path.goto(x,y)
+        self.path.goto(x, y)
         self.path.down()
         self.path.begin_fill()
 
@@ -57,7 +58,7 @@ class PacmanGame:
                     self.path.dot(2, 'white')  # creates pellets
 
     def get_pacman(self):
-        return self.pacman.agent
+        return self.pacman
 
     def get_ghost(self, ghost_num):
         return self.ghosts[ghost_num]
@@ -84,58 +85,55 @@ class PacmanGame:
     def move_pacman(self):
 
         direction = self.pacman.move() # get agents direction it intends to go
-        if self.board.valid_move(self.pacman_object + direction):
-            self.pacman_object.move(direction)  # our copy of the agent moves in the board
-            newPos = self.board.determine_teleports(self.pacman_object)
-            self.pacman_object = newPos
-            self.pacman.update(self.pacman_object)  # we update the agent where the board let it go
-            self.board.update_pacman(self.pacman_object, direction)
+        if self.board.valid_move(self.pac_pos + direction):
+            self.pac_pos.move(direction)  # our copy of the agent moves in the board
+            newPos = self.board.determine_teleports(self.pac_pos)
+            self.pac_pos = newPos
+            self.pacman.update(self.pac_pos)  # we update the agent where the board let it go
+            self.board.update_pacman(newPos)
 
-        position = self.board.get_offset(self.pacman_object)  # pacman's current position
+        position = get_offset(self.pacman.pos)  # pacman's current position
         self.scoring(position)
 
-        self.board.update_pacman(self.pacman_object, direction)
+        self.board.update_pacman(position)
 
         up()
-        goto(self.pacman_object.x + 10, self.pacman_object.y + 10)
+        goto(self.pac_pos.x + 10, self.pac_pos.y + 10)
         dot(20, 'yellow')
 
     def move_ghosts(self):
         count = 0
         for ghost in self.ghosts:
             count += 1
-            ghost.update_pacman(self.pacman_object, direction)
             direction = ghost.move()
-            object = vector(ghost.x, ghost.y)
-            if self.board.valid_move(object + direction):
-                object.move(direction)
-                newPos = self.board.determine_teleports(object)
-                object = newPos
-                ghost.update(object)
+            new_pos = vector(ghost.pos.x + direction.x, ghost.pos.y + direction.y)
+            if self.board.valid_move(ghost.pos + direction):
+                ghost.pos = new_pos
+                newPos = self.board.determine_teleports(ghost.pos)
+                ghost.pos = newPos
+                ghost.update(ghost.pos)
 
             if count == 1:
                 up()
-                goto(object.x + 10, object.y + 10) # draws pinky
+                goto(ghost.pos.x + 10, ghost.pos.y + 10) # draws pinky
                 dot(20, 'pink')
             elif count == 2:
                 up()
-                goto(object.x + 10, object.y + 10)
+                goto(ghost.pos.x + 10, ghost.pos.y + 10)
                 dot(20, 'orange')
             elif count == 3:
                 up()
-                goto(object.x + 10, object.y + 10)
+                goto(ghost.pos.x + 10, ghost.pos.y + 10)
                 dot(20, 'light blue')
             else:
                 up()
-                goto(object.x + 10, object.y + 10)
+                goto(ghost.pos.x + 10, ghost.pos.y + 10)
                 dot(20, 'red')
 
         self.board.update_ghosts(self.ghosts)
 
         for ghost in self.ghosts:
-            self.ghosts_objects.append(vector(ghost.x, ghost.y))
-
-        self.pacman.update_ghosts(self.ghosts_objects)
+            self.ghost_positions.append(ghost.pos)
 
     def run_game(self):
         self.end = datetime.now()
@@ -160,14 +158,14 @@ class PacmanGame:
         update()  # updates the board
 
         for ghost in self.ghosts:  # kill pacman function
-            if abs(self.pacman_object - vector(ghost.x, ghost.y)) < 20 or self.state.get('score') == 160:
-                self.kill_pacman(self.pacman_object, vector(ghost.x, ghost.y))
+            if abs(self.pac_pos - ghost.pos) < 20 or self.state.get('score') == 160:
+                self.kill_pacman(self.pac_pos, ghost.pos)
                 self.path.clear() # clears the path maker
                 self.writer.clear() # clears the score from the window
                 raise SystemExit # causes the program to "terminate" (temporary fix so the simulation automatically closes the display and allows the program to continue)
                 return
 
-        ontimer(self.run_game, 100)  # loops make_moves at 80fps
+        ontimer(self.run_game, 1)  # loops make_moves at 80fps
         # while not self.is_finish:
         #     self.run_game()
 
