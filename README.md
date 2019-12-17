@@ -68,5 +68,12 @@ This project implemented different Artificial Intelligence approaches for the gh
 
 The following graphs were created after collecting data from multiple simulations of Pacman with varying ghost AI types and pacman AI types.
 
+![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/count-capture_type.png)
+![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-capture_type.png)
+![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_score-pacman_type.png)
+![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-capture_type.png)
+![](https://github.com/ElvinLord12/pacman_intelligent_agents/blob/master/mean_time-pacman_type.png)
+
+
 ## Original Code Source
 https://github.com/grantjenks/free-python-games/blob/master/freegames/pacman.py
