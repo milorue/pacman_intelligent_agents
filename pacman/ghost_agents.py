@@ -50,57 +50,66 @@ class GhostRandom:
         self.x = new_location.x
         self.y = new_location.y
 
-class GhostBlinky:  # unfinished dev
-    def __init__(self, vec, direction, board):
-        self.board = board
-        self.direction = direction
-        self.x = vec.x
-        self.y = vec.y
-        self.moves = [  # speed
-            vector(10, 0),  # right
-            vector(-10, 0),  # left
-            vector(0, 10),  # up
-            vector(0, -10)  # down
-        ]
-
-        self.valid_moves_count = 0
-    def move(self):
-        position = self.board.make_vec(self.x, self.y)
-        self.choose_move()
-        return self.direction
-
-    def choose_move(self):
+    def update_pacman(self, pacman):
         pass
 
-    def heuristic(self, a, b):
-        x1 = a.x
-        y1 = a.y
-        x2 = b.x
-        y2 = b.y
-        return abs(x1 - x2) + abs(y1 - y2)
+    def get_ghosts(self, ghosts):
+        pass
 
-    def search(self, currPos, pacmanPos):
-        start = (currPos.x, currPos.y)
-        goal = (pacmanPos.x, pacmanPos.y)
-        frontier = PriorityQueue()
-        frontier.put((start, 0))
-        came_from = {}
-        cost = {}
-        came_from[start] = None
-        cost[start] = 0
 
-        while not frontier.empty():
-            current = frontier.get()
-
-            if current == goal:
-                break
-
-            for next in self.board.moves_from(vector(current[0], current[1])):
-                new_cost = cost[current] + 10
-                priority = new_cost + self.heuristic(pacmanPos, next)
-                frontier.put((next.x, next.y), priority)
-                came_from[(next.x, next.y)] = current
-
+# class GhostBlinky:  # unfinished dev
+#     def __init__(self, vec, direction, board):
+#         self.board = board
+#         self.direction = direction
+#         self.x = vec.x
+#         self.y = vec.y
+#         self.moves = [  # speed
+#             vector(10, 0),  # right
+#             vector(-10, 0),  # left
+#             vector(0, 10),  # up
+#             vector(0, -10)  # down
+#         ]
+#
+#         self.valid_moves_count = 0
+#     def move(self):
+#         position = self.board.make_vec(self.x, self.y)
+#         self.choose_move()
+#         return self.direction
+#
+#     def choose_move(self):
+#         pass
+#
+#     def heuristic(self, a, b):
+#         x1 = a.x
+#         y1 = a.y
+#         x2 = b.x
+#         y2 = b.y
+#         return abs(x1 - x2) + abs(y1 - y2)
+#
+#     def search(self, currPos, pacmanPos):
+#         start = (currPos.x, currPos.y)
+#         goal = (pacmanPos.x, pacmanPos.y)
+#         frontier = PriorityQueue()
+#         frontier.put((start, 0))
+#         came_from = {}
+#         cost = {}
+#         came_from[start] = None
+#         cost[start] = 0
+#
+#         while not frontier.empty():
+#             current = frontier.get()
+#
+#             if current == goal:
+#                 break
+#
+#             for next in self.board.moves_from(vector(current[0], current[1])):
+#                 new_cost = cost[current] + 10
+#                 priority = new_cost + self.heuristic(pacmanPos, next)
+#                 frontier.put((next.x, next.y), priority)
+#                 came_from[(next.x, next.y)] = current
+#
+#     def get_ghosts(self, ghosts):
+#         pass
 
 class GhostBetter:
     def __init__(self, vec, direction, board, pacman):
@@ -161,6 +170,9 @@ class GhostBetter:
     def get_position(self):
         return self.board.make_vec(self.x, self.y)
 
+    def get_ghosts(self, ghosts):
+        pass
+
 
 class GhostPinky:
     def __init__(self, vec, direction, board, pacman):
@@ -203,6 +215,9 @@ class GhostPinky:
 
     def get_position(self):
         return self.board.make_vec(self.x, self.y)
+
+    def get_ghosts(self, ghosts):
+        pass
 
 
 class GhostAStarWithScatter:
@@ -282,6 +297,9 @@ class GhostAStarWithScatter:
     def get_position(self):
         return self.board.make_vec(self.x, self.y)
 
+    def get_ghosts(self, ghosts):
+        pass
+
 
 class GhostAStar:
     def __init__(self, vec, direction, board, pacman):
@@ -318,6 +336,152 @@ class GhostAStar:
 
     def get_position(self):
         return self.board.make_vec(self.x, self.y)
+
+    def get_ghosts(self, ghosts):
+        pass
+
+
+class GhostBS:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+
+        self.valid_moves_count = 0
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+
+        valid = self.board.pacman_moves(obj)
+        invalid = self.board.invalid_moves_from(obj)
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            branch = a_star(self.board, obj, self.pacmanPos)
+            try:
+                self.direction = branch[1] - branch[0]
+            except:
+                return self.direction * 2
+            return self.direction * 2
+
+        else:
+            return self.direction * 2
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+    def get_ghosts(self, ghosts):
+        pass
+
+
+class GhostRandomFollow:
+    def __init__(self, vec, direction, board, pacman):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+
+        self.valid_moves_count = 0
+
+        self.ghosts = None
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+        valid = self.board.moves_from(obj)
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            displacement = self.distance_from_pacman()
+            if displacement <= 5:
+                branch = a_star(self.board, obj, self.pacmanPos)
+                try:
+                    self.direction = branch[1] - branch[0]
+                except:
+                    return self.direction
+                return self.direction
+            else:
+                branch = a_star(self.board, obj, choice(self.board.valid_locations()))
+                try:
+                    self.direction = branch[1] - branch[0]
+                except:
+                    return self.direction
+                return self.direction
+            return self.direction
+        else:
+            return self.direction
+
+    def distance_from_pacman(self):
+        x_disp = abs(int(self.x - self.pacmanPos.x))
+        y_disp = abs(int(self.y - self.pacmanPos.y))
+        disp = int((x_disp + y_disp) / 20)
+
+        return disp
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_ghosts(self, ghosts):
+        pass
+
+
+class GhostFollowLeader:
+    def __init__(self, vec, direction, board, pacman, ghosts):
+        self.board = board
+        self.direction = direction
+        self.pacmanPos = pacman
+        self.x = vec.x
+        self.y = vec.y
+
+        self.ghosts = ghosts
+        self.leader = self.pacmanPos
+        for ghost in self.ghosts:
+            if vector(ghost.x, ghost.y) is not vector(self.x, self.y):
+                self.leader = vector(ghost.x, ghost.y)
+
+    def update_pacman(self, pacman):
+        self.pacmanPos = pacman
+
+    def move(self):
+        obj = self.board.make_vec(self.x, self.y)
+
+        valid = self.board.moves_from(obj)
+
+        if len(valid) >= 3 or obj in self.board.get_decision_points():
+            branch = a_star(self.board, obj, self.leader)
+            try:
+                self.direction = branch[1] - branch[0]
+            except:
+                return self.direction
+            return self.direction
+
+        else:
+            return self.direction
+
+    def update(self, new_location):
+        self.x = new_location.x
+        self.y = new_location.y
+
+    def get_position(self):
+        return self.board.make_vec(self.x, self.y)
+
+    def get_ghosts(self, ghosts):
+        count = 0
+        self.ghosts = ghosts
+        for ghost in ghosts:
+            if count == 0 or ghost != self.board.make_vec(self.x, self.y):
+                self.leader = vector(ghost.x, ghost.y)
+            else:
+                pass
 
 
 class AStarNode:
