@@ -365,11 +365,11 @@ class GhostBS:
             try:
                 self.direction = branch[1] - branch[0]
             except:
-                return self.direction
-            return self.direction
+                return self.direction * 2
+            return self.direction * 2
 
         else:
-            return self.direction
+            return self.direction * 2
 
     def update(self, new_location):
         self.x = new_location.x
