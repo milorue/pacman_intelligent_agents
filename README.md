@@ -1,3 +1,11 @@
+---
+### This was a project for Intelligent Systems at Ithaca College
+If you would like to utilize parts or the whole of this code be aware it may be a bit messy but it improves on the freegames & pacman implementations by Grant Jenks. It moves much of the system to OOP approach and has some working A* and smarter versions of ghosts & pacman to play around with.
+
+Make sure you have the freegames library installed from the below link and clone this repository and you should be good to go. If there are any issues with the repository feel free to open an issue and I'll try to get to it promptly.
+
+---
+
 # Project: Pacman (and Ghost) AI
 Milo Rue, Gabe Pesco, Justin Moczynski
 
